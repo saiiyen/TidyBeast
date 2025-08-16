@@ -1,0 +1,157 @@
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background oval -->
+  <ellipse cx="200" cy="150" rx="180" ry="120" fill="#C6F6D5" opacity="0.3"/>
+  
+  <!-- Premium badge -->
+  <rect x="310" y="10" width="70" height="25" rx="12" fill="#9AE6B4"/>
+  <text x="345" y="26" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#2D3748">Premium</text>
+  
+  <!-- Hand and arm -->
+  <g transform="translate(100, 100)">
+    <!-- Arm/sleeve -->
+    <ellipse cx="40" cy="80" rx="25" ry="60" fill="#68D391" transform="rotate(-30 40 80)"/>
+    
+    <!-- Hand -->
+    <ellipse cx="80" cy="50" rx="20" ry="15" fill="#F7A072" transform="rotate(-20 80 50)"/>
+    
+    <!-- Fingers -->
+    <ellipse cx="90" cy="40" rx="8" ry="4" fill="#F7A072" transform="rotate(-10 90 40)"/>
+    <ellipse cx="95" cy="45" rx="8" ry="4" fill="#F7A072" transform="rotate(0 95 45)"/>
+    <ellipse cx="98" cy="52" rx="8" ry="4" fill="#F7A072" transform="rotate(10 98 52)"/>
+    <ellipse cx="95" cy="58" rx="6" ry="3" fill="#F7A072" transform="rotate(15 95 58)"/>
+    
+    <!-- Thumb -->
+    <ellipse cx="75" cy="60" rx="6" ry="10" fill="#F7A072" transform="rotate(30 75 60)"/>
+  </g>
+  
+  <!-- Spray bottle -->
+  <g transform="translate(150, 120)">
+    <!-- Bottle body -->
+    <rect x="0" y="20" width="25" height="50" rx="12" fill="#FBD38D"/>
+    
+    <!-- Bottle neck -->
+    <rect x="8" y="10" width="9" height="15" fill="#FBD38D"/>
+    
+    <!-- Bottle cap/trigger -->
+    <rect x="6" y="5" width="13" height="10" rx="5" fill="#8B4513"/>
+    
+    <!-- Spray nozzle -->
+    <rect x="17" y="8" width="8" height="4" rx="2" fill="#8B4513"/>
+    
+    <!-- Label -->
+    <rect x="3" y="35" width="19" height="15" rx="2" fill="#FFFFFF"/>
+    <circle cx="12.5" cy="42.5" r="3" fill="#68D391"/>
+    <text x="12.5" y="46" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="#38A169">+</text>
+    
+    <!-- Liquid inside bottle -->
+    <rect x="2" y="40" width="21" height="25" rx="10" fill="#68D391" opacity="0.6"/>
+  </g>
+  
+  <!-- Spray particles -->
+  <g>
+    <!-- Large spray cone -->
+    <path d="M175 128 Q220 120 280 130 Q300 140 320 160 Q310 170 290 175 Q250 180 200 170 Q180 150 175 128 Z" fill="#68D391" opacity="0.3"/>
+    
+    <!-- Spray droplets -->
+    <circle cx="190" cy="135" r="2" fill="#38A169" opacity="0.8"/>
+    <circle cx="210" cy="140" r="3" fill="#38A169" opacity="0.7"/>
+    <circle cx="230" cy="145" r="2" fill="#38A169" opacity="0.9"/>
+    <circle cx="250" cy="150" r="2.5" fill="#38A169" opacity="0.6"/>
+    <circle cx="270" cy="155" r="2" fill="#38A169" opacity="0.8"/>
+    <circle cx="290" cy="160" r="3" fill="#38A169" opacity="0.7"/>
+    
+    <!-- Smaller particles -->
+    <circle cx="200" cy="130" r="1" fill="#68D391"/>
+    <circle cx="220" cy="135" r="1.5" fill="#68D391"/>
+    <circle cx="240" cy="140" r="1" fill="#68D391"/>
+    <circle cx="260" cy="145" r="1.2" fill="#68D391"/>
+    <circle cx="280" cy="150" r="1" fill="#68D391"/>
+    <circle cx="300" cy="155" r="1.5" fill="#68D391"/>
+    
+    <!-- Micro particles -->
+    <circle cx="195" cy="125" r="0.5" fill="#38A169"/>
+    <circle cx="215" cy="130" r="0.8" fill="#38A169"/>
+    <circle cx="235" cy="135" r="0.5" fill="#38A169"/>
+    <circle cx="255" cy="140" r="0.7" fill="#38A169"/>
+    <circle cx="275" cy="145" r="0.5" fill="#38A169"/>
+    <circle cx="295" cy="150" r="0.8" fill="#38A169"/>
+    <circle cx="310" cy="155" r="0.5" fill="#38A169"/>
+  </g>
+  
+  <!-- Plus symbols (sanitization symbols) -->
+  <g fill="#48BB78" opacity="0.6">
+    <!-- Large plus symbols -->
+    <g transform="translate(80, 50)">
+      <rect x="8" y="2" width="4" height="16" rx="2"/>
+      <rect x="2" y="8" width="16" height="4" rx="2"/>
+    </g>
+    
+    <g transform="translate(120, 80)">
+      <rect x="6" y="1" width="3" height="12" rx="1.5"/>
+      <rect x="1" y="6" width="12" height="3" rx="1.5"/>
+    </g>
+    
+    <g transform="translate(300, 60)">
+      <rect x="8" y="2" width="4" height="16" rx="2"/>
+      <rect x="2" y="8" width="16" height="4" rx="2"/>
+    </g>
+    
+    <g transform="translate(320, 100)">
+      <rect x="6" y="1" width="3" height="12" rx="1.5"/>
+      <rect x="1" y="6" width="12" height="3" rx="1.5"/>
+    </g>
+    
+    <!-- Medium plus symbols -->
+    <g transform="translate(60, 120)">
+      <rect x="4" y="1" width="2" height="8" rx="1"/>
+      <rect x="1" y="4" width="8" height="2" rx="1"/>
+    </g>
+    
+    <g transform="translate(340, 180)">
+      <rect x="4" y="1" width="2" height="8" rx="1"/>
+      <rect x="1" y="4" width="8" height="2" rx="1"/>
+    </g>
+    
+    <!-- Small plus symbols -->
+    <g transform="translate(90, 200)">
+      <rect x="3" y="0.5" width="1.5" height="6" rx="0.75"/>
+      <rect x="0.5" y="3" width="6" height="1.5" rx="0.75"/>
+    </g>
+    
+    <g transform="translate(280, 200)">
+      <rect x="3" y="0.5" width="1.5" height="6" rx="0.75"/>
+      <rect x="0.5" y="3" width="6" height="1.5" rx="0.75"/>
+    </g>
+  </g>
+  
+  <!-- Floating particles for background -->
+  <g fill="#68D391" opacity="0.4">
+    <circle cx="50" cy="80" r="3"/>
+    <circle cx="350" cy="120" r="2"/>
+    <circle cx="70" cy="200" r="2.5"/>
+    <circle cx="320" cy="240" r="2"/>
+    <circle cx="30" cy="160" r="1.5"/>
+    <circle cx="370" cy="80" r="2.5"/>
+  </g>
+  
+  <!-- Virus/germ symbols being eliminated -->
+  <g fill="#E53E3E" opacity="0.3">
+    <circle cx="250" cy="200" r="8"/>
+    <circle cx="246" cy="196" r="2"/>
+    <circle cx="254" cy="196" r="2"/>
+    <circle cx="246" cy="204" r="2"/>
+    <circle cx="254" cy="204" r="2"/>
+    <circle cx="242" cy="200" r="2"/>
+    <circle cx="258" cy="200" r="2"/>
+    
+    <circle cx="300" cy="220" r="6"/>
+    <circle cx="297" cy="217" r="1.5"/>
+    <circle cx="303" cy="217" r="1.5"/>
+    <circle cx="297" cy="223" r="1.5"/>
+    <circle cx="303" cy="223" r="1.5"/>
+  </g>
+  
+  <!-- Strike-through lines over germs -->
+  <line x1="240" y1="190" x2="260" y2="210" stroke="#68D391" stroke-width="3" opacity="0.8"/>
+  <line x1="290" y1="210" x2="310" y2="230" stroke="#68D391" stroke-width="2" opacity="0.8"/>
+</svg>

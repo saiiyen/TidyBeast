@@ -1,0 +1,89 @@
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="400" height="400" fill="#f0fdf4"/>
+  
+  <!-- Five Stars at top -->
+  <g fill="#000000" stroke="#10b981" stroke-width="3">
+    <g transform="translate(40, 30)">
+      <path d="M16 0 L20 12 L32 12 L24 20 L28 32 L16 24 L4 32 L8 20 L0 12 L12 12 Z" fill="#10b981"/>
+    </g>
+    <g transform="translate(100, 30)">
+      <path d="M16 0 L20 12 L32 12 L24 20 L28 32 L16 24 L4 32 L8 20 L0 12 L12 12 Z" fill="#10b981"/>
+    </g>
+    <g transform="translate(160, 30)">
+      <path d="M16 0 L20 12 L32 12 L24 20 L28 32 L16 24 L4 32 L8 20 L0 12 L12 12 Z" fill="#10b981"/>
+    </g>
+    <g transform="translate(220, 30)">
+      <path d="M16 0 L20 12 L32 12 L24 20 L28 32 L16 24 L4 32 L8 20 L0 12 L12 12 Z" fill="#10b981"/>
+    </g>
+    <g transform="translate(280, 30)">
+      <path d="M16 0 L20 12 L32 12 L24 20 L28 32 L16 24 L4 32 L8 20 L0 12 L12 12 Z" fill="#10b981"/>
+    </g>
+  </g>
+  
+  <!-- Premium badge -->
+  <rect x="300" y="15" width="85" height="25" rx="12" fill="#a3e635"/>
+  <text x="342" y="30" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#000000">Premium</text>
+  
+  <!-- Phone/Mobile device -->
+  <g transform="translate(30, 120)">
+    <rect x="0" y="0" width="80" height="140" rx="15" fill="#000000"/>
+    <rect x="5" y="15" width="70" height="50" rx="5" fill="#10b981"/>
+    <!-- Screen elements -->
+    <rect x="10" y="25" width="15" height="10" fill="#ffffff"/>
+    <rect x="30" y="25" width="15" height="10" fill="#ffffff"/>
+    <rect x="10" y="40" width="35" height="5" fill="#ffffff"/>
+    <rect x="10" y="50" width="25" height="5" fill="#ffffff"/>
+    <!-- Checkmark -->
+    <path d="M15 85 L25 95 L40 80" stroke="#10b981" stroke-width="3" fill="none"/>
+  </g>
+  
+  <!-- Happy face -->
+  <g transform="translate(200, 120)">
+    <circle cx="60" cy="60" r="50" fill="#10b981"/>
+    <circle cx="45" cy="45" r="8" fill="#000000"/>
+    <circle cx="75" cy="45" r="8" fill="#000000"/>
+    <!-- Smile -->
+    <path d="M35 70 Q60 90 85 70" stroke="#000000" stroke-width="4" fill="none"/>
+    <!-- Cheeks -->
+    <ellipse cx="25" cy="65" rx="12" ry="8" fill="#000000" opacity="0.3"/>
+    <ellipse cx="95" cy="65" rx="12" ry="8" fill="#000000" opacity="0.3"/>
+    <!-- Sparkles around -->
+    <g stroke="#000000" stroke-width="2" fill="none">
+      <path d="M140 30 L145 40 L150 30 M145 25 L145 45"/>
+      <path d="M25 25 L30 35 L35 25 M30 20 L30 40"/>
+      <path d="M130 100 L135 110 L140 100 M135 95 L135 115"/>
+    </g>
+  </g>
+  
+  <!-- Service elements -->
+  <!-- Message bubble with hearts -->
+  <g transform="translate(300, 200)">
+    <rect x="0" y="0" width="80" height="40" rx="15" fill="#000000"/>
+    <polygon points="10,40 20,50 30,40" fill="#000000"/>
+    <!-- Hearts inside -->
+    <g fill="#10b981">
+      <path d="M20 15 C15 10 5 10 5 20 C5 25 20 35 20 35 C20 35 35 25 35 20 C35 10 25 10 20 15"/>
+      <path d="M40 15 C37 12 32 12 32 17 C32 20 40 25 40 25 C40 25 48 20 48 17 C48 12 43 12 40 15"/>
+      <path d="M60 15 C57 12 52 12 52 17 C52 20 60 25 60 25 C60 25 68 20 68 17 C68 12 63 12 60 15"/>
+    </g>
+  </g>
+  
+  <!-- Chat bubble -->
+  <g transform="translate(50, 280)">
+    <rect x="0" y="0" width="80" height="30" rx="10" fill="#10b981" opacity="0.7"/>
+    <polygon points="15,30 25,40 35,30" fill="#10b981" opacity="0.7"/>
+    <!-- Dots -->
+    <circle cx="20" cy="15" r="3" fill="#ffffff"/>
+    <circle cx="35" cy="15" r="3" fill="#ffffff"/>
+    <circle cx="50" cy="15" r="3" fill="#ffffff"/>
+  </g>
+  
+  <!-- Decorative arrow -->
+  <g transform="translate(150, 180)" fill="#10b981" opacity="0.6">
+    <path d="M0 20 Q20 0 40 20 Q45 25 40 30 Q20 40 0 30 Q-5 25 0 20"/>
+    <circle cx="10" cy="25" r="2" fill="#000000" opacity="0.5"/>
+    <circle cx="20" cy="20" r="2" fill="#000000" opacity="0.5"/>
+    <circle cx="30" cy="25" r="2" fill="#000000" opacity="0.5"/>
+  </g>
+</svg>

@@ -1,0 +1,103 @@
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Premium badge -->
+  <rect x="310" y="10" width="70" height="25" rx="12" fill="#9AE6B4"/>
+  <text x="345" y="26" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#2D3748">Premium</text>
+  
+  <!-- Floor -->
+  <rect x="0" y="250" width="400" height="50" fill="#F7FAFC"/>
+  
+  <!-- Plant pot -->
+  <ellipse cx="50" cy="250" rx="25" ry="15" fill="#8B5CF6"/>
+  <rect x="35" y="200" width="30" height="50" fill="#8B5CF6"/>
+  
+  <!-- Plant leaves -->
+  <ellipse cx="40" cy="180" rx="8" ry="25" fill="#48BB78" transform="rotate(-30 40 180)"/>
+  <ellipse cx="50" cy="170" rx="8" ry="25" fill="#48BB78" transform="rotate(-10 50 170)"/>
+  <ellipse cx="60" cy="180" rx="8" ry="25" fill="#48BB78" transform="rotate(30 60 180)"/>
+  <ellipse cx="45" cy="160" rx="8" ry="25" fill="#48BB78" transform="rotate(10 45 160)"/>
+  <ellipse cx="55" cy="160" rx="8" ry="25" fill="#48BB78" transform="rotate(-10 55 160)"/>
+  
+  <!-- Grid pattern on plant pot -->
+  <line x1="35" y1="210" x2="65" y2="210" stroke="#FFFFFF" stroke-width="2"/>
+  <line x1="35" y1="220" x2="65" y2="220" stroke="#FFFFFF" stroke-width="2"/>
+  <line x1="35" y1="230" x2="65" y2="230" stroke="#FFFFFF" stroke-width="2"/>
+  <line x1="35" y1="240" x2="65" y2="240" stroke="#FFFFFF" stroke-width="2"/>
+  <line x1="45" y1="200" x2="45" y2="250" stroke="#FFFFFF" stroke-width="2"/>
+  <line x1="55" y1="200" x2="55" y2="250" stroke="#FFFFFF" stroke-width="2"/>
+  
+  <!-- Sofa -->
+  <rect x="120" y="180" width="180" height="70" rx="15" fill="#FFFFFF"/>
+  <rect x="110" y="170" width="200" height="20" rx="10" fill="#FFFFFF"/>
+  
+  <!-- Sofa pillows -->
+  <ellipse cx="160" cy="175" rx="25" ry="15" fill="#E2E8F0"/>
+  <rect x="135" y="160" width="50" height="30" rx="15" fill="#8B5CF6"/>
+  
+  <!-- Sofa legs -->
+  <rect x="125" y="250" width="8" height="15" fill="#2D3748"/>
+  <rect x="145" y="250" width="8" height="15" fill="#2D3748"/>
+  <rect x="275" y="250" width="8" height="15" fill="#2D3748"/>
+  <rect x="295" y="250" width="8" height="15" fill="#2D3748"/>
+  
+  <!-- Brown blanket/throw -->
+  <path d="M200 190 Q220 185 250 190 Q270 195 280 210 Q275 230 250 235 Q220 230 200 220 Q190 205 200 190 Z" fill="#8B4513"/>
+  
+  <!-- Folded blanket texture -->
+  <path d="M210 200 Q230 195 250 200" stroke="#654321" stroke-width="2" fill="none"/>
+  <path d="M205 210 Q225 205 245 210" stroke="#654321" stroke-width="2" fill="none"/>
+  <path d="M215 220 Q235 215 255 220" stroke="#654321" stroke-width="2" fill="none"/>
+  
+  <!-- Dog on sofa -->
+  <g transform="translate(220, 160)">
+    <!-- Body -->
+    <ellipse cx="0" cy="10" rx="20" ry="12" fill="#F7FAFC"/>
+    
+    <!-- Head -->
+    <circle cx="-15" cy="0" r="12" fill="#F7FAFC"/>
+    
+    <!-- Ears -->
+    <ellipse cx="-20" cy="-8" rx="5" ry="10" fill="#E2E8F0"/>
+    <ellipse cx="-10" cy="-8" rx="5" ry="10" fill="#E2E8F0"/>
+    
+    <!-- Snout -->
+    <ellipse cx="-22" cy="2" rx="6" ry="4" fill="#F7FAFC"/>
+    
+    <!-- Nose -->
+    <circle cx="-25" cy="0" r="2" fill="#2D3748"/>
+    
+    <!-- Eyes -->
+    <circle cx="-18" cy="-3" r="2" fill="#2D3748"/>
+    <circle cx="-12" cy="-3" r="2" fill="#2D3748"/>
+    
+    <!-- Legs -->
+    <ellipse cx="-10" cy="18" rx="3" ry="8" fill="#F7FAFC"/>
+    <ellipse cx="-5" cy="18" rx="3" ry="8" fill="#F7FAFC"/>
+    <ellipse cx="5" cy="18" rx="3" ry="8" fill="#F7FAFC"/>
+    <ellipse cx="10" cy="18" rx="3" ry="8" fill="#F7FAFC"/>
+    
+    <!-- Tail -->
+    <ellipse cx="15" cy="8" rx="8" ry="4" fill="#F7FAFC" transform="rotate(20 15 8)"/>
+    
+    <!-- Spots -->
+    <circle cx="-8" cy="5" r="3" fill="#E2E8F0"/>
+    <circle cx="5" cy="8" r="2" fill="#E2E8F0"/>
+  </g>
+  
+  <!-- Floor lamp -->
+  <g transform="translate(330, 150)">
+    <!-- Lamp base -->
+    <ellipse cx="0" cy="100" rx="20" ry="8" fill="#2D3748"/>
+    <rect x="-3" y="50" width="6" height="50" fill="#2D3748"/>
+    
+    <!-- Lamp shade -->
+    <path d="M-25 30 Q0 20 25 30 L20 50 L-20 50 Z" fill="#A0AEC0"/>
+    
+    <!-- Decorative pattern on lamp -->
+    <rect x="-15" y="35" width="30" height="2" fill="#718096"/>
+    <rect x="-15" y="40" width="30" height="2" fill="#718096"/>
+    <rect x="-15" y="45" width="30" height="2" fill="#718096"/>
+  </g>
+  
+  <!-- Watermark/branding area -->
+  <text x="200" y="290" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#E2E8F0" opacity="0.3">s·com</text>
+</svg>

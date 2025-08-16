@@ -1,0 +1,74 @@
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Browser Window -->
+  <rect x="50" y="20" width="300" height="200" rx="12" fill="#E8F4F8"/>
+  <rect x="50" y="20" width="300" height="30" rx="12" fill="#B8D4E0"/>
+  <rect x="50" y="35" width="300" height="15" rx="0" fill="#B8D4E0"/>
+  
+  <!-- Browser dots -->
+  <circle cx="65" cy="35" r="4" fill="#FF6B6B"/>
+  <circle cx="80" cy="35" r="4" fill="#FFE066"/>
+  <circle cx="95" cy="35" r="4" fill="#4ECDC4"/>
+  
+  <!-- Premium badge -->
+  <rect x="280" y="10" width="70" height="25" rx="12" fill="#9AE6B4"/>
+  <text x="315" y="26" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#2D3748">Premium</text>
+  
+  <!-- Image placeholders in browser -->
+  <rect x="70" y="70" width="80" height="60" rx="8" fill="#CBD5E0"/>
+  <rect x="160" y="70" width="80" height="60" rx="8" fill="#CBD5E0"/>
+  <rect x="70" y="140" width="80" height="60" rx="8" fill="#CBD5E0"/>
+  
+  <!-- Mountains and sun in first image -->
+  <path d="M70 110 L90 90 L110 100 L130 85 L150 130 L70 130 Z" fill="#90CDF4"/>
+  <circle cx="130" cy="85" r="8" fill="#FBD38D"/>
+  
+  <!-- Mountains and sun in second image -->
+  <path d="M160 105 L180 85 L200 95 L220 80 L240 130 L160 130 Z" fill="#90CDF4"/>
+  <circle cx="220" cy="85" r="8" fill="#FBD38D"/>
+  
+  <!-- Spider/bug in corner -->
+  <circle cx="280" cy="180" r="8" fill="#2D3748"/>
+  <line x1="272" y1="172" x2="288" y2="188" stroke="#2D3748" stroke-width="2"/>
+  <line x1="288" y1="172" x2="272" y2="188" stroke="#2D3748" stroke-width="2"/>
+  <line x1="270" y1="180" x2="290" y2="180" stroke="#2D3748" stroke-width="2"/>
+  <line x1="280" y1="170" x2="280" y2="190" stroke="#2D3748" stroke-width="2"/>
+  
+  <!-- Decorative web lines -->
+  <path d="M20 30 Q150 50 280 70" stroke="#E2E8F0" stroke-width="2" fill="none"/>
+  <path d="M30 250 Q200 200 370 180" stroke="#E2E8F0" stroke-width="2" fill="none"/>
+  
+  <!-- Woman figure -->
+  <g transform="translate(250, 120)">
+    <!-- Body -->
+    <ellipse cx="25" cy="80" rx="15" ry="25" fill="#FFFFFF"/>
+    
+    <!-- Arms -->
+    <ellipse cx="15" cy="70" rx="8" ry="15" fill="#F7FAFC" transform="rotate(-20 15 70)"/>
+    <ellipse cx="35" cy="70" rx="8" ry="15" fill="#F7FAFC" transform="rotate(20 35 70)"/>
+    
+    <!-- Skirt -->
+    <path d="M10 95 Q25 90 40 95 L45 130 Q25 135 5 130 Z" fill="#F6AD55"/>
+    
+    <!-- Legs -->
+    <ellipse cx="18" cy="150" rx="6" ry="20" fill="#F7FAFC"/>
+    <ellipse cx="32" cy="150" rx="6" ry="20" fill="#F7FAFC"/>
+    
+    <!-- Shoes -->
+    <ellipse cx="18" cy="165" rx="8" ry="6" fill="#2D3748"/>
+    <ellipse cx="32" cy="165" rx="8" ry="6" fill="#2D3748"/>
+    
+    <!-- Head -->
+    <circle cx="25" cy="45" r="15" fill="#F7A072"/>
+    
+    <!-- Hair -->
+    <path d="M15 35 Q25 25 35 35 Q38 40 35 50 Q30 55 25 50 Q20 55 15 50 Q12 40 15 35 Z" fill="#2D3748"/>
+    
+    <!-- Hands -->
+    <circle cx="15" cy="80" r="4" fill="#F7A072"/>
+    <circle cx="35" cy="80" r="4" fill="#F7A072"/>
+    
+    <!-- Cleaning tool (duster) -->
+    <rect x="40" y="75" width="15" height="4" rx="2" fill="#E53E3E"/>
+    <rect x="55" y="70" width="20" height="14" rx="7" fill="#F6AD55"/>
+  </g>
+</svg>

@@ -1,0 +1,63 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .cls-1 { fill: #1f2937; }
+      .cls-2 { fill: #10b981; }
+      .cls-3 { fill: #ec4899; }
+      .cls-4 { fill: #fbbf24; }
+      .cls-5 { fill: #3b82f6; }
+      .cls-6 { fill: #f3f4f6; }
+      .cls-7 { fill: #e5e7eb; }
+      .cls-8 { fill: none; stroke: #1f2937; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+    </style>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="95" fill="#c6f6d5" opacity="0.3"/>
+  
+  <!-- Premium badge -->
+  <rect x="140" y="25" width="50" height="20" rx="10" fill="#10b981"/>
+  <text x="165" y="37" text-anchor="middle" fill="white" font-size="10" font-weight="bold">Premium</text>
+  
+  <!-- Cleaning lady figure -->
+  <!-- Head -->
+  <circle cx="75" cy="65" r="12" class="cls-6"/>
+  <!-- Black hair -->
+  <path d="M65,58 Q75,50 85,58 L85,65 Q80,70 75,70 Q70,70 65,65 Z" class="cls-1"/>
+  
+  <!-- Body (green dress) -->
+  <path d="M75,77 L65,85 Q60,95 58,110 L58,130 Q60,135 65,135 L85,135 Q90,135 92,130 L92,110 Q90,95 85,85 Z" class="cls-2"/>
+  
+  <!-- Arms -->
+  <!-- Left arm holding broom -->
+  <ellipse cx="60" cy="90" rx="8" ry="20" transform="rotate(-30 60 90)" class="cls-6"/>
+  <!-- Right arm -->
+  <ellipse cx="90" cy="95" rx="8" ry="18" class="cls-6"/>
+  
+  <!-- Legs -->
+  <ellipse cx="68" cy="145" rx="6" ry="15" class="cls-1"/>
+  <ellipse cx="82" cy="145" rx="6" ry="15" class="cls-1"/>
+  
+  <!-- Blue shoes -->
+  <ellipse cx="68" cy="158" rx="8" ry="5" class="cls-5"/>
+  <ellipse cx="82" cy="158" rx="8" ry="5" class="cls-5"/>
+  
+  <!-- Broom handle -->
+  <line x1="45" y1="75" x2="40" y2="165" class="cls-8"/>
+  
+  <!-- Broom head (yellow) -->
+  <path d="M40,165 L35,175 M40,165 L45,175 M40,165 L38,175 M40,165 L42,175 M40,165 L36,173 M40,165 L44,173" class="cls-4" stroke="#fbbf24" stroke-width="2"/>
+  
+  <!-- Cleaning debris/sparkles around -->
+  <!-- Debris pieces -->
+  <path d="M30,120 Q25,115 20,120 Q15,125 20,130 Q25,135 30,130 Q35,125 30,120 Z" class="cls-7"/>
+  <path d="M120,85 Q115,80 110,85 Q105,90 110,95 Q115,100 120,95 Q125,90 120,85 Z" class="cls-5" opacity="0.6"/>
+  <path d="M135,125 Q130,120 125,125 Q120,130 125,135 Q130,140 135,135 Q140,130 135,125 Z" class="cls-7"/>
+  
+  <!-- Sparkles -->
+  <g class="sparkles">
+    <path d="M150,70 L152,72 L150,74 L148,72 Z M150,68 L150,76 M146,72 L154,72" class="cls-4" stroke="#fbbf24" stroke-width="1"/>
+    <path d="M25,95 L27,97 L25,99 L23,97 Z M25,93 L25,101 M21,97 L29,97" class="cls-3" stroke="#ec4899" stroke-width="1"/>
+    <path d="M160,140 L162,142 L160,144 L158,142 Z M160,138 L160,146 M156,142 L164,142" class="cls-5" stroke="#3b82f6" stroke-width="1"/>
+  </g>
+</svg>

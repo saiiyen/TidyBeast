@@ -1,0 +1,73 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .cls-1 { fill: #1f2937; }
+      .cls-2 { fill: #10b981; }
+      .cls-3 { fill: #ec4899; }
+      .cls-4 { fill: #fbbf24; }
+      .cls-5 { fill: #3b82f6; }
+      .cls-6 { fill: #f3f4f6; }
+      .cls-7 { fill: #e5e7eb; }
+      .cls-8 { fill: none; stroke: #1f2937; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+      .cls-9 { fill: #a3a3a3; }
+    </style>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="95" fill="#ddd6fe" opacity="0.3"/>
+  
+  <!-- Premium badge -->
+  <rect x="140" y="25" width="50" height="20" rx="10" fill="#10b981"/>
+  <text x="165" y="37" text-anchor="middle" fill="white" font-size="10" font-weight="bold">Premium</text>
+  
+  <!-- Person figure -->
+  <!-- Head -->
+  <circle cx="100" cy="70" r="15" class="cls-6"/>
+  <!-- Black hair -->
+  <path d="M88,60 Q100,45 112,60 L112,70 Q105,78 100,78 Q95,78 88,70 Z" class="cls-1"/>
+  
+  <!-- Body (white shirt) -->
+  <path d="M100,85 L85,95 Q80,105 78,125 L78,150 Q80,155 85,155 L115,155 Q120,155 122,150 L122,125 Q120,105 115,95 Z" class="cls-6"/>
+  
+  <!-- Arms -->
+  <!-- Left arm reaching out -->
+  <ellipse cx="80" cy="105" rx="10" ry="25" transform="rotate(-20 80 105)" class="cls-6"/>
+  <!-- Right arm -->
+  <ellipse cx="120" cy="110" rx="10" ry="22" class="cls-6"/>
+  
+  <!-- Large green cleaning sponge/cloth -->
+  <ellipse cx="65" cy="95" rx="18" ry="12" class="cls-2" transform="rotate(-15 65 95)"/>
+  <!-- Sponge texture dots -->
+  <circle cx="60" cy="92" r="2" fill="#065f46" opacity="0.6"/>
+  <circle cx="68" cy="88" r="2" fill="#065f46" opacity="0.6"/>
+  <circle cx="72" cy="96" r="2" fill="#065f46" opacity="0.6"/>
+  <circle cx="58" cy="100" r="2" fill="#065f46" opacity="0.6"/>
+  
+  <!-- Legs -->
+  <ellipse cx="92" cy="165" rx="8" ry="18" class="cls-1"/>
+  <ellipse cx="108" cy="165" rx="8" ry="18" class="cls-1"/>
+  
+  <!-- Shoes -->
+  <ellipse cx="92" cy="180" rx="10" ry="6" class="cls-1"/>
+  <ellipse cx="108" cy="180" rx="10" ry="6" class="cls-1"/>
+  
+  <!-- Cleaning effect - radiating lines and sparkles -->
+  <g class="cleaning-effects">
+    <!-- Radiating lines from sponge -->
+    <path d="M50,85 L40,75 M55,75 L45,65 M70,82 L80,72 M75,100 L85,110 M50,105 L40,115" stroke="#10b981" stroke-width="2" opacity="0.7"/>
+    
+    <!-- Water droplets/bubbles -->
+    <circle cx="45" cy="90" r="3" fill="#3b82f6" opacity="0.6"/>
+    <circle cx="35" cy="100" r="2" fill="#3b82f6" opacity="0.5"/>
+    <circle cx="52" cy="115" r="2.5" fill="#3b82f6" opacity="0.6"/>
+    <circle cx="85" cy="75" r="2" fill="#3b82f6" opacity="0.5"/>
+    
+    <!-- Sparkle effects -->
+    <g class="sparkles">
+      <path d="M30,70 L32,72 L30,74 L28,72 Z M30,68 L30,76 M26,72 L34,72" stroke="#10b981" stroke-width="1.5"/>
+      <path d="M140,85 L142,87 L140,89 L138,87 Z M140,83 L140,91 M136,87 L144,87" stroke="#10b981" stroke-width="1.5"/>
+      <path d="M90,50 L92,52 L90,54 L88,52 Z M90,48 L90,56 M86,52 L94,52" stroke="#10b981" stroke-width="1.5"/>
+      <path d="M170,120 L172,122 L170,124 L168,122 Z M170,118 L170,126 M166,122 L174,122" stroke="#10b981" stroke-width="1.5"/>
+    </g>
+  </g>
+</svg>
