@@ -226,7 +226,7 @@ const Contact = () => {
                     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
                     toast.info('Please fill out the contact form below to get a personalized quote!');
                   } else if (action.title === "Emergency Clean") {
-                    window.location.href = 'tel:+9959047238';
+                    window.location.href = 'tel:+919959047238';
                   }
                 }}
               >
@@ -435,7 +435,16 @@ const Contact = () => {
                   return (
                     <Card 
                       key={info.title}
-                      className="group hover:shadow-elegant transition-all duration-300 transform hover:-translate-y-1 border-0 bg-gradient-card"
+                      className={`group hover:shadow-elegant transition-all duration-300 transform hover:-translate-y-1 border-0 bg-gradient-card ${
+                        info.title === "Call Us" ? "cursor-pointer hover:bg-teal-50" : ""
+                      }`}
+                      onClick={() => {
+                        if (info.title === "Call Us") {
+                          window.location.href = 'tel:+919959047238';
+                        } else if (info.title === "Email Us") {
+                          window.location.href = 'mailto:choosetidybeast@gmail.com';
+                        }
+                      }}
                     >
                       <CardContent className="p-4">
                         <div className="flex items-start space-x-3">
@@ -446,10 +455,15 @@ const Contact = () => {
                             <h4 className="font-semibold text-card-foreground">{info.title}</h4>
                             {info.title === "Email Us" ? (
                               <CopyableEmail email={info.details} className="text-primary font-medium" />
+                            ) : info.title === "Call Us" ? (
+                              <p className="text-primary font-medium hover:text-teal-600 transition-colors">{info.details}</p>
                             ) : (
                               <p className="text-primary font-medium">{info.details}</p>
                             )}
                             <p className="text-sm text-muted-foreground">{info.subtitle}</p>
+                            {info.title === "Call Us" && (
+                              <p className="text-xs text-teal-600 mt-1 opacity-75">Click to call</p>
+                            )}
                           </div>
                         </div>
                       </CardContent>
