@@ -13,9 +13,9 @@
 
 ---
 
-### 🌐💻 **[View Live Website](https://tidybeast.lovable.app)**
+### 🌐💻 **[View Live Website](https://tidy-tidy.vercel.app)**
 
-[![TidyBeast Platform Preview](https://github.com/saiiyen/services-assets/raw/main/Home.png)](https://tidybeast.lovable.app)
+[![TidyBeast Platform Preview](https://github.com/saiiyen/services-assets/raw/main/Home.png)](https://tidy-tidy.vercel.app)
 
 *Click the image above to explore the full platform on web*
 
@@ -41,7 +41,7 @@
 
 <div align="center">
 
-[![Complete Website Overview](https://github.com/saiiyen/services-assets/blob/main/web.png)](https://tidybeast.lovable.app)
+[![Complete Website Overview](https://github.com/saiiyen/services-assets/blob/main/web.png)](https://tidy-tidy.vercel.app)
 
 *☝️All pages and features*
 
