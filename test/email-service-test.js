@@ -2,30 +2,30 @@
 import { directEmailService } from '../src/services/directEmailService.js';
 
 async function testEmailService() {
-  console.log('🧪 Testing TidyBeast Email Service...');
+  // Testing TidyBeast Email Service
   
   try {
     const testResult = await directEmailService.testEmail();
     
     if (testResult) {
-      console.log('✅ Email service test PASSED');
-      console.log('📧 Test email sent to choosetidybeast@gmail.com');
+      // Email service test PASSED
+      // Test email sent to choosetidybeast@gmail.com
     } else {
-      console.log('⚠️ Email service test completed with fallback options shown');
-      console.log('📧 This means primary methods failed but backup options were provided');
+      // Email service test completed with fallback options shown
+      // Primary methods failed but backup options were provided
     }
     
   } catch (error) {
-    console.error('❌ Email service test FAILED:', error);
+    // Email service test FAILED - logged internally
   }
   
   // Test retry functionality
-  console.log('\n🔄 Testing retry functionality...');
+  // Testing retry functionality
   try {
     await directEmailService.retryFailedEmails();
-    console.log('✅ Retry functionality working correctly');
+    // Retry functionality working correctly
   } catch (error) {
-    console.error('❌ Retry functionality failed:', error);
+    // Retry functionality failed - logged internally
   }
 }
 

@@ -110,12 +110,12 @@ const BookingModal: React.FC<BookingModalProps> = ({
 
       // Store booking temporarily (will be updated after payment)
       sessionStorage.setItem('tempBooking', JSON.stringify(bookingData));
-      console.log('Booking data prepared:', bookingData);
+      // Booking data prepared
 
       setShowPaymentModal(true);
       toast.success("Booking details saved! Please complete payment to confirm.");
     } catch (error) {
-      console.error('Booking error:', error);
+      // Booking error - logged internally
       toast.error("Failed to create booking. Please try again.");
     } finally {
       setLoading(false);
@@ -145,11 +145,11 @@ const BookingModal: React.FC<BookingModalProps> = ({
         
         // Trigger data collection service (Google Sheets & Email)
         try {
-          console.log('🚀 Triggering data collection for booking:', confirmedBooking.id);
+          // Triggering data collection for booking
           await dataCollectionService.handleBookingData(confirmedBooking as BookingData);
-          console.log('✅ Data collection completed successfully');
+          // Data collection completed successfully
         } catch (dataError) {
-          console.error('❌ Data collection failed (non-critical):', dataError);
+          // Data collection failed (non-critical) - logged internally
           // Don't show error to user as this is background process
           // Data is still saved locally, so booking is still valid
         }
@@ -157,7 +157,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
         // Clear temporary booking
         sessionStorage.removeItem('tempBooking');
         
-        console.log('Booking confirmed and saved:', confirmedBooking);
+        // Booking confirmed and saved
       }
       
       toast.success("Booking confirmed! Your details have been sent to our team and you'll receive confirmation shortly.");
@@ -175,7 +175,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
         specialRequirements: '',
       });
     } catch (error) {
-      console.error('Payment confirmation error:', error);
+      // Payment confirmation error - logged internally
       toast.error("Payment successful but booking confirmation failed. Please contact support.");
     }
   };

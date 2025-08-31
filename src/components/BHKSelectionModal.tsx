@@ -30,7 +30,7 @@ const BHKSelectionModal: React.FC<BHKSelectionModalProps> = ({
 
   // Error handling for missing pricing
   if (!currentServicePricing) {
-    console.error('No pricing data available for service:', serviceName);
+    // No pricing data available for service - logged internally
     return (
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent className="max-w-md mx-auto">

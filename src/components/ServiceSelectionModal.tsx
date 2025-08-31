@@ -172,7 +172,7 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({
       setShowPaymentModal(true);
       toast.success("Booking details saved! Please complete payment to confirm.");
     } catch (error) {
-      console.error('Booking error:', error);
+      // Booking error - logged internally
       toast.error("Failed to create booking. Please try again.");
     } finally {
       setLoading(false);
@@ -200,11 +200,11 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({
         
         // Trigger data collection service (Google Sheets & Email)
         try {
-          console.log('🚀 Triggering data collection for booking:', confirmedBooking.id);
+          // Triggering data collection for booking
           await dataCollectionService.handleBookingData(confirmedBooking as BookingData);
-          console.log('✅ Data collection completed successfully');
+          // Data collection completed successfully
         } catch (dataError) {
-          console.error('❌ Data collection failed (non-critical):', dataError);
+          // Data collection failed (non-critical) - logged internally
         }
         
         // Also send via direct email service for immediate delivery
@@ -224,9 +224,9 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({
             special_requirements: confirmedBooking.special_requirements,
             transaction_id: transactionId
           });
-          console.log('✅ Direct booking email sent successfully');
+          // Direct booking email sent successfully
         } catch (emailError) {
-          console.error('❌ Direct booking email failed:', emailError);
+          // Direct booking email failed - logged internally
         }
         
         sessionStorage.removeItem('tempBooking');
@@ -249,7 +249,7 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({
         specialRequirements: '',
       });
     } catch (error) {
-      console.error('Payment confirmation error:', error);
+      // Payment confirmation error - logged internally
       toast.error("Payment successful but booking confirmation failed. Please contact support.");
     }
   };

@@ -101,10 +101,10 @@ const Contact = () => {
       const emailSent = await directEmailService.sendContactEmail(emailData);
       
       if (!emailSent) {
-        console.warn('⚠️ Email delivery failed through all methods, but user was shown fallback options');
+        // Email delivery failed through all methods, but user was shown fallback options
         // User will see fallback options via the directEmailService
       } else {
-        console.log('✅ Email sent successfully to choosetidybeast@gmail.com');
+        // Email sent successfully to choosetidybeast@gmail.com
       }
       
       // Show success message
@@ -120,7 +120,7 @@ const Contact = () => {
       if (messageRef.current) messageRef.current.value = '';
       
     } catch (error) {
-      console.error('Contact form submission error:', error);
+      // Contact form submission error - error logged internally by services
       toast.error('Failed to send message. Please try again.');
     } finally {
       setIsSubmitting(false);

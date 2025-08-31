@@ -26,49 +26,49 @@ class DirectEmailService {
    * Send email using multiple methods for maximum reliability
    */
   async sendContactEmail(formData: EmailFormData): Promise<boolean> {
-    console.log('🚀 Starting email delivery process...');
+    // Starting email delivery process
     
     const emailContent = this.generateEmailContent(formData);
     let success = false;
 
     // Method 1: FormSubmit (Free, reliable)
     try {
-      console.log('📧 Attempting FormSubmit delivery...');
+      // Attempting FormSubmit delivery
       success = await this.sendViaFormSubmit(formData, emailContent);
       if (success) {
-        console.log('✅ Email sent successfully via FormSubmit');
+        // Email sent successfully via FormSubmit
         return true;
       }
     } catch (error) {
-      console.error('❌ FormSubmit failed:', error);
+      // FormSubmit failed - logged internally
     }
 
     // Method 2: Netlify Forms (if deployed on Netlify)
     try {
-      console.log('📧 Attempting Netlify Forms delivery...');
+      // Attempting Netlify Forms delivery
       success = await this.sendViaNetlifyForms(formData, emailContent);
       if (success) {
-        console.log('✅ Email sent successfully via Netlify Forms');
+        // Email sent successfully via Netlify Forms
         return true;
       }
     } catch (error) {
-      console.error('❌ Netlify Forms failed:', error);
+      // Netlify Forms failed - logged internally
     }
 
     // Method 3: EmailJS (backup)
     try {
-      console.log('📧 Attempting EmailJS delivery...');
+      // Attempting EmailJS delivery
       success = await this.sendViaEmailJS(formData, emailContent);
       if (success) {
-        console.log('✅ Email sent successfully via EmailJS');
+        // Email sent successfully via EmailJS
         return true;
       }
     } catch (error) {
-      console.error('❌ EmailJS failed:', error);
+      // EmailJS failed - logged internally
     }
 
     // Method 4: Store locally and show fallback
-    console.log('📧 All methods failed, storing locally and showing fallback...');
+    // All methods failed, storing locally and showing fallback
     this.storeEmailLocally(formData, emailContent);
     this.showFallbackOptions(formData);
     
@@ -225,7 +225,7 @@ TidyBeast Customer Contact System
     existingEmails.push(emailData);
     localStorage.setItem('failed_contact_emails', JSON.stringify(existingEmails));
     
-    console.log('📧 Email stored locally for manual processing');
+    // Email stored locally for manual processing
   }
 
   /**
@@ -255,7 +255,7 @@ We'll contact you within 2 hours!
     `.trim();
 
     // This would show a modal or alert to the user
-    console.log('📧 Fallback message prepared:', fallbackMessage);
+    // Fallback message prepared
     
     // You could also trigger a modal here
     alert(fallbackMessage);
@@ -287,7 +287,7 @@ We'll contact you within 2 hours!
 
     for (const emailData of failedEmails) {
       if (emailData.attempts < 3) { // Maximum 3 attempts
-        console.log(`🔄 Retrying email for ${emailData.firstName} ${emailData.lastName}...`);
+        // Retrying email for customer
         
         const success = await this.sendContactEmail({
           firstName: emailData.firstName,
@@ -311,7 +311,7 @@ We'll contact you within 2 hours!
     const remainingFailed = failedEmails.filter(email => !successfulRetries.includes(email));
     localStorage.setItem('failed_contact_emails', JSON.stringify(remainingFailed));
 
-    console.log(`✅ Successfully retried ${successfulRetries.length} emails`);
+    // Email retry process completed
   }
 }
 

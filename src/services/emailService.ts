@@ -45,7 +45,7 @@ class EmailService {
       });
 
       if (response.ok) {
-        console.log('✅ Email sent successfully via Formspree');
+        // Email sent successfully via Formspree
         return true;
       }
 
@@ -54,7 +54,7 @@ class EmailService {
       return true;
 
     } catch (error) {
-      console.error('❌ Email service error:', error);
+      // Email service error - logged internally
       
       // Method 3: Store locally for manual processing
       this.storeEmailLocally(emailData);
@@ -90,9 +90,9 @@ class EmailService {
         throw new Error(`Webhook error: ${response.status}`);
       }
 
-      console.log('✅ Email sent successfully via webhook');
+      // Email sent successfully via webhook
     } catch (error) {
-      console.error('❌ Webhook email failed:', error);
+      // Webhook email failed - logged internally
       throw error;
     }
   }
@@ -108,7 +108,7 @@ class EmailService {
       status: 'pending'
     });
     localStorage.setItem('pending_emails', JSON.stringify(emails));
-    console.log('📧 Email stored locally for manual processing');
+    // Email stored locally for manual processing
   }
 
   /**

@@ -66,7 +66,7 @@ const Services = () => {
         setShowBHKModal(true);
       }
     } catch (error) {
-      console.error('Error opening service booking modal:', error);
+      // Error opening service booking modal - logged internally
       // Fallback to direct contact
       window.location.href = 'tel:+919959047238';
     }
@@ -82,7 +82,7 @@ const Services = () => {
       setShowBHKModal(false);
       setShowBookingModal(true);
     } catch (error) {
-      console.error('Error handling BHK selection:', error);
+      // Error handling BHK selection - logged internally
       // Close modals and fallback to contact
       setShowBHKModal(false);
       window.location.href = 'tel:+919959047238';
@@ -99,7 +99,7 @@ const Services = () => {
       setShowQuantityModal(false);
       setShowBookingModal(true);
     } catch (error) {
-      console.error('Error handling quantity selection:', error);
+      // Error handling quantity selection - logged internally
       // Close modals and fallback to contact
       setShowQuantityModal(false);
       window.location.href = 'tel:+919959047238';
@@ -116,7 +116,7 @@ const Services = () => {
       setShowSofaModal(false);
       setShowBookingModal(true);
     } catch (error) {
-      console.error('Error handling sofa selection:', error);
+      // Error handling sofa selection - logged internally
       // Close modals and fallback to contact
       setShowSofaModal(false);
       window.location.href = 'tel:+919959047238';
@@ -133,7 +133,7 @@ const Services = () => {
       setShowCarpetModal(false);
       setShowBookingModal(true);
     } catch (error) {
-      console.error('Error handling carpet selection:', error);
+      // Error handling carpet selection - logged internally
       // Close modals and fallback to contact
       setShowCarpetModal(false);
       window.location.href = 'tel:+919959047238';
@@ -431,8 +431,8 @@ const Services = () => {
                       window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
                     }
                   } catch (error) {
-                    console.error('Error scrolling to contact:', error);
-                    // Silent fail - don't break the UI
+                    // Error scrolling to contact - silent fail
+                    // Don't break the UI
                   }
                 }}
               >

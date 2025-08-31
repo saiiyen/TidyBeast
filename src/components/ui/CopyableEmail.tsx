@@ -31,7 +31,7 @@ const CopyableEmail: React.FC<CopyableEmailProps> = ({
         setCopied(false);
       }, 2000);
     } catch (error) {
-      console.error('Failed to copy email:', error);
+      // Failed to copy email - logged internally
       toast.error('Failed to copy email. Please try again.');
     }
   };

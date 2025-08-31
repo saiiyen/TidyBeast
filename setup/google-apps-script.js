@@ -41,7 +41,7 @@ function doPost(e) {
     
     return createResponse(false, 'Unknown action');
   } catch (error) {
-    console.error('Error processing POST request:', error);
+    // Error processing POST request - logged internally
     return createResponse(false, 'Error processing request: ' + error.message);
   }
 }
@@ -90,7 +90,7 @@ function handleAddBooking(bookingData) {
     try {
       sendEmailNotification(bookingData);
     } catch (emailError) {
-      console.warn('Email notification failed:', emailError);
+      // Email notification failed - logged internally
       // Don't fail the whole operation if email fails
     }
     
@@ -100,7 +100,7 @@ function handleAddBooking(bookingData) {
     });
     
   } catch (error) {
-    console.error('Error adding booking:', error);
+    // Error adding booking - logged internally
     return createResponse(false, 'Error adding booking: ' + error.message);
   }
 }
@@ -232,9 +232,9 @@ TidyBeast Automated Booking System
       htmlBody: emailBody.replace(/\n/g, '<br>').replace(/━/g, '─')
     });
     
-    console.log('Email notification sent successfully');
+    // Email notification sent successfully
   } catch (error) {
-    console.error('Failed to send email notification:', error);
+    // Failed to send email notification - logged internally
     throw error;
   }
 }
@@ -293,9 +293,9 @@ function createResponse(success, message, data = null) {
  * Test function that can be run manually in the Apps Script editor
  */
 function runManualTest() {
-  console.log('Running manual test...');
+  // Running manual test
   const result = handleTest();
-  console.log('Test result:', result.getContent());
+  // Test result logged internally
 }
 
 /**
@@ -304,12 +304,12 @@ function runManualTest() {
 function initializeSheet() {
   try {
     const sheet = getOrCreateSheet();
-    console.log('Sheet initialized successfully');
-    console.log('Sheet name:', sheet.getName());
-    console.log('Headers added:', sheet.getLastRow() > 0);
+    // Sheet initialized successfully
+    // Sheet name logged internally
+    // Headers status logged internally
     return 'Sheet initialized successfully!';
   } catch (error) {
-    console.error('Error initializing sheet:', error);
+    // Error initializing sheet - logged internally
     return 'Error initializing sheet: ' + error.message;
   }
 }

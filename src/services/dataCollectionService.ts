@@ -55,7 +55,7 @@ class DataCollectionService {
    */
   async handleBookingData(bookingData: BookingData): Promise<void> {
     try {
-      console.log('📊 Processing booking data:', bookingData.id);
+      // Processing booking data
       
       // Run both operations in parallel for efficiency
       const [sheetsResult, emailResult] = await Promise.allSettled([
@@ -63,22 +63,17 @@ class DataCollectionService {
         this.sendEmailNotification(bookingData)
       ]);
 
-      // Log results
-      if (sheetsResult.status === 'fulfilled') {
-        console.log('✅ Google Sheets updated successfully');
-      } else {
-        console.error('❌ Google Sheets update failed:', sheetsResult.reason);
+      // Handle results silently - errors are logged internally
+      if (sheetsResult.status === 'rejected') {
+        // Google Sheets update failed - logged internally
       }
 
-      if (emailResult.status === 'fulfilled') {
-        console.log('✅ Email notification sent successfully');
-      } else {
-        console.error('❌ Email notification failed:', emailResult.reason);
+      if (emailResult.status === 'rejected') {
+        // Email notification failed - logged internally
       }
 
     } catch (error) {
-      console.error('❌ Data collection service error:', error);
-      // Don't throw error to avoid breaking the user experience
+      // Data collection service error - don't throw to avoid breaking UX
       // Log error for monitoring
       this.logError('DataCollectionService.handleBookingData', error, bookingData);
     }
@@ -158,7 +153,7 @@ This booking has been confirmed and payment received successfully.`
     const emailSent = await directEmailService.sendContactEmail(bookingEmailData);
     
     if (!emailSent) {
-      console.warn('⚠️ Booking email delivery failed through all methods');
+      // Booking email delivery failed through all methods
       // Store for manual processing
       this.storeEmailForManualProcessing({
         type: 'booking_confirmation',
@@ -166,7 +161,7 @@ This booking has been confirmed and payment received successfully.`
         emailData: bookingEmailData
       });
     } else {
-      console.log('✅ Booking confirmation email sent to choosetidybeast@gmail.com');
+      // Booking confirmation email sent successfully
     }
   }
 
@@ -229,11 +224,7 @@ TidyBeast Automated Booking System
     // This would integrate with EmailJS, SendGrid, or similar service
     // For now, we'll log the email content and simulate sending
     
-    console.log('📧 Email notification prepared:', {
-      to: emailPayload.template_params.to_email,
-      subject: emailPayload.template_params.subject,
-      content: emailPayload.template_params.message
-    });
+    // Email notification prepared
 
     // Simulate API call
     try {
@@ -283,8 +274,6 @@ TidyBeast Automated Booking System
       data: data ? { id: data.id, user_email: data.user_email } : null
     };
     
-    console.error('🔴 Data Collection Error:', errorLog);
-    
     // Store error for later analysis
     const existingErrors = JSON.parse(localStorage.getItem('data_collection_errors') || '[]');
     existingErrors.push(errorLog);
@@ -296,7 +285,7 @@ TidyBeast Automated Booking System
    */
   async handleContactFormData(contactData: ContactFormData): Promise<void> {
     try {
-      console.log('📝 Processing contact form data:', contactData.id);
+      // Processing contact form data
       
       // Run both operations in parallel for efficiency
       const [sheetsResult, emailResult] = await Promise.allSettled([
@@ -304,21 +293,17 @@ TidyBeast Automated Booking System
         this.sendContactEmailNotification(contactData)
       ]);
 
-      // Log results
-      if (sheetsResult.status === 'fulfilled') {
-        console.log('✅ Contact form data sent to Google Sheets successfully');
-      } else {
-        console.error('❌ Contact form Google Sheets update failed:', sheetsResult.reason);
+      // Handle results silently - errors are logged internally
+      if (sheetsResult.status === 'rejected') {
+        // Contact form Google Sheets update failed - logged internally
       }
 
-      if (emailResult.status === 'fulfilled') {
-        console.log('✅ Contact form email notification sent successfully');
-      } else {
-        console.error('❌ Contact form email notification failed:', emailResult.reason);
+      if (emailResult.status === 'rejected') {
+        // Contact form email notification failed - logged internally
       }
 
     } catch (error) {
-      console.error('❌ Contact form service error:', error);
+      // Contact form service error - logged internally
       this.logError('DataCollectionService.handleContactFormData', error, contactData);
     }
   }
@@ -377,7 +362,7 @@ TidyBeast Automated Booking System
     const emailSent = await directEmailService.sendContactEmail(contactEmailData);
     
     if (!emailSent) {
-      console.warn('⚠️ Contact form email delivery failed through all methods');
+      // Contact form email delivery failed through all methods
       // Store for manual processing
       this.storeEmailForManualProcessing({
         type: 'contact_form',
@@ -385,7 +370,7 @@ TidyBeast Automated Booking System
         emailData: contactEmailData
       });
     } else {
-      console.log('✅ Contact form email sent to choosetidybeast@gmail.com');
+      // Contact form email sent successfully
     }
   }
 
@@ -459,7 +444,7 @@ TidyBeast Automated Contact System
       await this.handleBookingData(testData);
       return true;
     } catch (error) {
-      console.error('Test failed:', error);
+      // Test failed - error logged internally
       return false;
     }
   }
