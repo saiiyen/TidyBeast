@@ -349,6 +349,63 @@ All colors MUST be HSL.
     animation: quote-highlight 3s ease-in-out infinite;
   }
   
+  /* Mobile-Specific Improvements */
+  @media (max-width: 640px) {
+    /* Reduce animation intensity on mobile */
+    .animate-float {
+      animation: float 4s ease-in-out infinite;
+    }
+    
+    .animate-bounce-gentle {
+      animation: bounce-gentle 3s ease-in-out infinite;
+    }
+    
+    /* Better mobile text sizing */
+    .hero-title-mobile {
+      font-size: 2.5rem !important;
+      line-height: 1.2 !important;
+    }
+    
+    /* Better mobile spacing */
+    .mobile-spacing {
+      padding: 1rem !important;
+    }
+    
+    /* Touch-friendly buttons */
+    .mobile-button {
+      min-height: 48px !important;
+      padding: 12px 24px !important;
+    }
+    
+    /* Better mobile cards */
+    .mobile-card {
+      margin: 0.5rem !important;
+      padding: 1rem !important;
+    }
+  }
+  
+  /* Tablet-Specific Improvements */
+  @media (min-width: 641px) and (max-width: 1024px) {
+    .tablet-grid {
+      grid-template-columns: repeat(2, 1fr) !important;
+    }
+    
+    .tablet-spacing {
+      padding: 2rem !important;
+    }
+  }
+  
+  /* Desktop-Specific Improvements */
+  @media (min-width: 1025px) {
+    .desktop-grid {
+      grid-template-columns: repeat(3, 1fr) !important;
+    }
+    
+    .desktop-hero {
+      min-height: 100vh !important;
+    }
+  }
+  
   /* Testimonial card enhancements */
   .testimonial-card {
     position: relative;

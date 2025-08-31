@@ -61,8 +61,8 @@ const Header = () => {
             ))}
           </nav>
 
-          {/* CTA Button */}
-          <div className="hidden md:block animate-slide-in-left">
+          {/* CTA Section */}
+          <div className="hidden md:flex items-center space-x-4 animate-slide-in-left">
             <Button 
               variant="cta"
               size="lg"
@@ -96,7 +96,8 @@ const Header = () => {
                   {link.name}
                 </button>
               ))}
-              <div className="px-4">
+              {/* Mobile CTA */}
+              <div className="px-4 space-y-2">
                 <Button 
                   variant="cta"
                   size="lg"

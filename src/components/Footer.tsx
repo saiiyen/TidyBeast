@@ -1,7 +1,16 @@
 import { Phone, Mail, MapPin, Facebook, Instagram } from "lucide-react";
-import { MessageSquare } from "lucide-react"; // We'll use this for Threads
 import { useNavigate } from "react-router-dom";
 import tidyBeastLogo from "@/assets/tidybeast-logo.png";
+import threadsIcon from "@/assets/threads.svg";
+
+// Custom Threads icon component using the SVG from repo
+const ThreadsIcon = ({ className }: { className?: string }) => (
+  <img 
+    src={threadsIcon} 
+    alt="Threads" 
+    className={`${className} filter brightness-0 invert`}
+  />
+);
 
 const Footer = () => {
   const navigate = useNavigate();
@@ -9,7 +18,7 @@ const Footer = () => {
   const socialLinks = [
     { icon: Instagram, href: "https://www.instagram.com/tidybeast_cleaning/", name: "Instagram" },
     { icon: Facebook, href: "https://www.facebook.com/profile.php?id=61569616935855", name: "Facebook" },
-    { icon: MessageSquare, href: "https://www.threads.net/@tidybeast.co.in", name: "Threads" },
+    { icon: ThreadsIcon, href: "https://www.threads.net/@tidybeast.co.in", name: "Threads" },
   ];
 
   const quickLinks = [
@@ -23,10 +32,13 @@ const Footer = () => {
   const services = [
     "Home Cleaning",
     "Deep Cleaning", 
-    "Office Cleaning",
+    "House Maiden",
     "Move-In/Out",
-    "Sofa & Carpet",
-    "Sanitization"
+    "Sofa Cleaning",
+    "Carpet Cleaning",
+    "Sanitization",
+    "Kitchen Cleaning",
+    "Washroom Cleaning"
   ];
 
   return (
@@ -35,11 +47,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {/* Brand Section */}
           <div className="space-y-6 animate-fade-in-up">
-            <div 
-              className="flex items-center space-x-3 group cursor-pointer"
-              onDoubleClick={() => navigate('/admin')}
-              title="Double-click for admin access"
-            >
+            <div className="flex items-center space-x-3 group">
               <div className="relative">
                 <img 
                   src={tidyBeastLogo} 
@@ -133,10 +141,10 @@ const Footer = () => {
                 <div>
                   <p className="text-sm text-primary-foreground/60">Email</p>
                   <a 
-                    href="mailto:contact@tidybeast.com" 
+                    href="mailto:choosetidybeast@gmail.com" 
                     className="font-semibold hover:text-accent transition-colors duration-300"
                   >
-                    contact@tidybeast.com
+                    choosetidybeast@gmail.com
                   </a>
                 </div>
               </div>
@@ -158,28 +166,8 @@ const Footer = () => {
         <div className="border-t border-white/20 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className="text-primary-foreground/60 text-sm">
-              © 2024 TidyBeast. All rights reserved.
+              © 2025 TidyBeast. All rights reserved.
             </p>
-            <div className="flex space-x-6 text-sm">
-              <button 
-                onClick={() => navigate('/privacy-policy')}
-                className="text-primary-foreground/60 hover:text-white transition-colors duration-300"
-              >
-                Privacy Policy
-              </button>
-              <button 
-                onClick={() => navigate('/terms-of-service')}
-                className="text-primary-foreground/60 hover:text-white transition-colors duration-300"
-              >
-                Terms of Service
-              </button>
-              <button 
-                onClick={() => navigate('/cookie-policy')}
-                className="text-primary-foreground/60 hover:text-white transition-colors duration-300"
-              >
-                Cookie Policy
-              </button>
-            </div>
           </div>
         </div>
       </div>

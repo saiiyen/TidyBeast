@@ -17,23 +17,128 @@ import {
   ArrowRight
 } from "lucide-react";
 import { toast } from "sonner";
-import BookingModal from "./BookingModal";
-import { useState } from "react";
+import ServiceSelectionModal from "./ServiceSelectionModal";
+import { useState, useRef } from "react";
+import { directEmailService, type EmailFormData } from "@/services/directEmailService";
+import { dataCollectionService, type ContactFormData } from "@/services/dataCollectionService";
+import CopyableEmail from "@/components/ui/CopyableEmail";
 
 const Contact = () => {
   const [showBookingModal, setShowBookingModal] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Form refs for collecting form data
+  const firstNameRef = useRef<HTMLInputElement>(null);
+  const lastNameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const phoneRef = useRef<HTMLInputElement>(null);
+  const serviceTypeRef = useRef<HTMLSelectElement>(null);
+  const homeSizeRef = useRef<HTMLSelectElement>(null);
+  const messageRef = useRef<HTMLTextAreaElement>(null);
+  
+  const handleContactFormSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    
+    // Validate form data
+    const firstName = firstNameRef.current?.value?.trim() || '';
+    const lastName = lastNameRef.current?.value?.trim() || '';
+    const email = emailRef.current?.value?.trim() || '';
+    const phone = phoneRef.current?.value?.trim() || '';
+    const serviceType = serviceTypeRef.current?.value || '';
+    const homeSize = homeSizeRef.current?.value || '';
+    const message = messageRef.current?.value?.trim() || '';
+    
+    // Basic validation
+    if (!firstName || !lastName || !email || !phone || !serviceType || !message) {
+      toast.error('Please fill in all required fields.');
+      return;
+    }
+    
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast.error('Please enter a valid email address.');
+      return;
+    }
+    
+    // Phone validation
+    const phoneRegex = /^[\+]?[1-9]?[0-9]{7,14}$/;
+    if (!phoneRegex.test(phone.replace(/\s/g, ''))) {
+      toast.error('Please enter a valid phone number.');
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
+    try {
+      // Create contact form data
+      const contactData: ContactFormData = {
+        id: `contact-${Date.now()}`,
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        phone: phone,
+        service_type: serviceType,
+        home_size: homeSize || undefined,
+        message: message,
+        created_at: new Date().toISOString()
+      };
+      
+      // Send data to collection service
+      await dataCollectionService.handleContactFormData(contactData);
+      
+      // Send email using robust email service with multiple fallbacks
+      const emailData: EmailFormData = {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        phone: phone,
+        serviceType: serviceType,
+        homeSize: homeSize,
+        message: message
+      };
+      
+      const emailSent = await directEmailService.sendContactEmail(emailData);
+      
+      if (!emailSent) {
+        console.warn('⚠️ Email delivery failed through all methods, but user was shown fallback options');
+        // User will see fallback options via the directEmailService
+      } else {
+        console.log('✅ Email sent successfully to choosetidybeast@gmail.com');
+      }
+      
+      // Show success message
+      toast.success('Thank you! We\'ll get back to you within 2 hours.');
+      
+      // Reset form
+      if (firstNameRef.current) firstNameRef.current.value = '';
+      if (lastNameRef.current) lastNameRef.current.value = '';
+      if (emailRef.current) emailRef.current.value = '';
+      if (phoneRef.current) phoneRef.current.value = '';
+      if (serviceTypeRef.current) serviceTypeRef.current.value = '';
+      if (homeSizeRef.current) homeSizeRef.current.value = '';
+      if (messageRef.current) messageRef.current.value = '';
+      
+    } catch (error) {
+      console.error('Contact form submission error:', error);
+      toast.error('Failed to send message. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+  
   const contactInfo = [
     {
       icon: Phone,
       title: "Call Us",
       details: "+91 99590 47238",
-      subtitle: "Mon-Sat: 8AM - 6PM",
+      subtitle: "Mon-Sun: 9AM - 9PM",
       color: "text-green-500"
     },
     {
       icon: Mail,
       title: "Email Us",
-      details: "contact@tidybeast.com",
+      details: "choosetidybeast@gmail.com",
       subtitle: "We reply within 2 hours",
       color: "text-blue-500"
     },
@@ -47,8 +152,8 @@ const Contact = () => {
     {
       icon: Clock,
       title: "Business Hours",
-      details: "Mon-Sat: 8AM-6PM",
-      subtitle: "Sunday: Emergency only",
+      details: "Mon-Sun: 9AM-9PM",
+      subtitle: "7 days a week service",
       color: "text-purple-500"
     }
   ];
@@ -61,10 +166,11 @@ const Contact = () => {
     "Madhapur",
     "Kondapur",
     "Kukatpally",
-    "Begumpet",
-    "Secunderabad",
+    "Bachupally",
+    "Nizampet",
     "Miyapur",
-    "Uppal",
+    "Mallampet",
+    "Gandi-maisamma",
     "And more areas..."
   ];
 
@@ -192,12 +298,13 @@ const Contact = () => {
               </div>
               
               <form className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label className="text-sm font-semibold text-gray-700 block">
                       First Name
                     </label>
                     <Input 
+                      ref={firstNameRef}
                       placeholder="John" 
                       className="h-12 rounded-xl border-gray-200 focus:border-teal-500 focus:ring-2 focus:ring-teal-100" 
                     />
@@ -207,6 +314,7 @@ const Contact = () => {
                       Last Name
                     </label>
                     <Input 
+                      ref={lastNameRef}
                       placeholder="Doe" 
                       className="h-12 rounded-xl border-gray-200 focus:border-teal-500 focus:ring-2 focus:ring-teal-100" 
                     />
@@ -218,6 +326,7 @@ const Contact = () => {
                     Email Address
                   </label>
                   <Input 
+                    ref={emailRef}
                     type="email" 
                     placeholder="john@example.com" 
                     className="h-12 rounded-xl border-gray-200 focus:border-teal-500 focus:ring-2 focus:ring-teal-100" 
@@ -229,25 +338,53 @@ const Contact = () => {
                     Phone Number
                   </label>
                   <Input 
+                    ref={phoneRef}
                     type="tel" 
                     placeholder="+91 98765 43210" 
                     className="h-12 rounded-xl border-gray-200 focus:border-teal-500 focus:ring-2 focus:ring-teal-100" 
                   />
                 </div>
                 
-                <div className="space-y-2">
-                  <label className="text-sm font-semibold text-gray-700 block">
-                    Service Type
-                  </label>
-                  <select className="w-full h-12 p-3 border border-gray-200 rounded-xl bg-white text-gray-900 focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-100">
-                    <option>Select a service</option>
-                    <option>Home Cleaning</option>
-                    <option>Deep Cleaning</option>
-                    <option>Office Cleaning</option>
-                    <option>Move-In/Out</option>
-                    <option>Post-Construction</option>
-                    <option>Other</option>
-                  </select>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-sm font-semibold text-gray-700 block">
+                      Service Type
+                    </label>
+                    <select 
+                      ref={serviceTypeRef}
+                      className="w-full h-12 p-3 border border-gray-200 rounded-xl bg-white text-gray-900 focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-100"
+                    >
+                      <option value="">Select a service</option>
+                      <option value="Home Cleaning">Home Cleaning</option>
+                      <option value="Deep Cleaning">Deep Cleaning</option>
+                      <option value="House Maiden">House Maiden</option>
+                      <option value="Move-In/Out">Move-In/Out</option>
+                      <option value="Sofa & Carpet">Sofa & Carpet</option>
+                      <option value="Sanitization">Sanitization</option>
+                      <option value="Kitchen Cleaning">Kitchen Cleaning</option>
+                      <option value="Washroom Cleaning">Washroom Cleaning</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <label className="text-sm font-semibold text-gray-700 block">
+                      Home Size (BHK)
+                    </label>
+                    <select 
+                      ref={homeSizeRef}
+                      className="w-full h-12 p-3 border border-gray-200 rounded-xl bg-white text-gray-900 focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-100"
+                    >
+                      <option value="">Select home size</option>
+                      <option value="Studio/1RK">Studio/1RK</option>
+                      <option value="1 BHK">1 BHK</option>
+                      <option value="2 BHK">2 BHK</option>
+                      <option value="3 BHK">3 BHK</option>
+                      <option value="4 BHK">4 BHK</option>
+                      <option value="5+ BHK">5+ BHK</option>
+                      <option value="Villa">Villa</option>
+                    </select>
+                  </div>
                 </div>
                 
                 <div className="space-y-2">
@@ -255,6 +392,7 @@ const Contact = () => {
                     Message
                   </label>
                   <Textarea 
+                    ref={messageRef}
                     placeholder="Tell us about your cleaning needs, space size, specific requirements..."
                     className="min-h-[120px] rounded-xl border-gray-200 focus:border-teal-500 focus:ring-2 focus:ring-teal-100 resize-none"
                   />
@@ -263,19 +401,24 @@ const Contact = () => {
                 <Button 
                   size="lg"
                   className="w-full h-14 bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 group"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    toast.success('Thank you! We\'ll get back to you within 2 hours.');
-                  }}
+                  onClick={handleContactFormSubmit}
+                  disabled={isSubmitting}
                 >
                   <span className="flex items-center justify-center gap-2">
-                    Send Message
+                    {isSubmitting ? 'Sending...' : 'Send Message'}
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </span>
                 </Button>
                 
                 <div className="text-center text-sm text-gray-500">
-                  <p>Or reach us directly at <strong>hello@tidybeast.com</strong></p>
+                  <p className="flex items-center justify-center gap-1">
+                    Or reach us directly at 
+                    <CopyableEmail 
+                      email="choosetidybeast@gmail.com" 
+                      className="font-medium text-gray-700 text-sm inline-flex"
+                      showTooltip={false}
+                    />
+                  </p>
                 </div>
               </form>
             </div>
@@ -299,9 +442,13 @@ const Contact = () => {
                           <div className="inline-flex items-center justify-center w-10 h-10 bg-primary/10 rounded-lg flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
                             <IconComponent className={`h-5 w-5 ${info.color}`} />
                           </div>
-                          <div>
+                          <div className="flex-1">
                             <h4 className="font-semibold text-card-foreground">{info.title}</h4>
-                            <p className="text-primary font-medium">{info.details}</p>
+                            {info.title === "Email Us" ? (
+                              <CopyableEmail email={info.details} className="text-primary font-medium" />
+                            ) : (
+                              <p className="text-primary font-medium">{info.details}</p>
+                            )}
                             <p className="text-sm text-muted-foreground">{info.subtitle}</p>
                           </div>
                         </div>
@@ -372,13 +519,10 @@ const Contact = () => {
         </div>
       </div>
       
-      {/* Booking Modal */}
-      <BookingModal
+      {/* Service Selection Modal */}
+      <ServiceSelectionModal
         isOpen={showBookingModal}
         onClose={() => setShowBookingModal(false)}
-        serviceName="General Cleaning Service"
-        serviceType="general"
-        basePrice={2999}
       />
     </section>
   );

@@ -1,17 +1,26 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import CustomQuoteForm from "./CustomQuoteForm";
+import BookingModal from "./BookingModal";
+import BHKSelectionModal from "./BHKSelectionModal";
+import QuantitySelectionModal from "./QuantitySelectionModal";
+import SofaSelectionModal from "./SofaSelectionModal";
+import CarpetSelectionModal from "./CarpetSelectionModal";
 import mascotImage from "@/assets/tidybeast-mascot.png";
 import homeCleaningImage from "@/assets/HomeCleaning.png";
 import deepCleaningImage from "@/assets/DeepCleaning.png";
 import officeCleaningImage from "@/assets/OfficeCleaning.png";
 import moveInOutImage from "@/assets/MoveInOut.png";
-import sofaCarpetImage from "@/assets/SofaCarpetCleaning.png";
+import sofaCleaningImage from "@/assets/SofaCarpetCleaning.png";
+import carpetCleaningImage from "@/assets/CC.png";
 import sanitizationImage from "@/assets/Sanitization.svg";
+import houseMaidenImage from "@/assets/HM.png";
+import kitchenCleaningImage from "@/assets/KC.png";
+import washroomCleaningImage from "@/assets/WC.png";
 import { 
   Home, 
   Sparkles, 
-  Building2, 
+  Users, 
   Truck, 
   Sofa, 
   ShieldCheck,
@@ -19,16 +28,125 @@ import {
   Indian_Rupee as Rupee,
   CheckCircle,
   ArrowRight,
-  Star
+  Star,
+  ChefHat,
+  Bath
 } from "lucide-react";
+import { useState } from "react";
+import { SERVICES_CONFIG, getServicePrice, type ServicePricing } from "@/config/pricing";
 
 const Services = () => {
+  const [selectedService, setSelectedService] = useState<{name: string, price: number, type: string} | null>(null);
+  const [showBookingModal, setShowBookingModal] = useState(false);
+  const [showBHKModal, setShowBHKModal] = useState(false);
+  const [showQuantityModal, setShowQuantityModal] = useState(false);
+  const [showSofaModal, setShowSofaModal] = useState(false);
+  const [showCarpetModal, setShowCarpetModal] = useState(false);
+  const [currentService, setCurrentService] = useState<any>(null);
+
+  // Get service pricing from unified config
+  const getUnifiedPricing = (serviceId: string): ServicePricing => {
+    const serviceConfig = SERVICES_CONFIG.find(s => s.id === serviceId);
+    return serviceConfig ? serviceConfig.pricing : SERVICES_CONFIG[0].pricing; // Fallback to home cleaning
+  };
+
+  const handleServiceBooking = (service: any) => {
+    try {
+      setCurrentService(service);
+      // Check service type for appropriate modal
+      if (service.serviceId === 'sofa-cleaning') {
+        setShowSofaModal(true);
+      } else if (service.serviceId === 'carpet-cleaning') {
+        setShowCarpetModal(true);
+      } else if (service.isQuantityBased) {
+        // For kitchen and washroom cleaning
+        setShowQuantityModal(true);
+      } else {
+        // For BHK-based services
+        setShowBHKModal(true);
+      }
+    } catch (error) {
+      console.error('Error opening service booking modal:', error);
+      // Fallback to direct contact
+      window.location.href = 'tel:+919959047238';
+    }
+  };
+
+  const handleBHKSelection = (bhkType: string, price: number) => {
+    try {
+      setSelectedService({
+        name: `${currentService.title} (${bhkType})`,
+        price: price,
+        type: currentService.title.toLowerCase().replace(/[^a-z0-9]/g, '-')
+      });
+      setShowBHKModal(false);
+      setShowBookingModal(true);
+    } catch (error) {
+      console.error('Error handling BHK selection:', error);
+      // Close modals and fallback to contact
+      setShowBHKModal(false);
+      window.location.href = 'tel:+919959047238';
+    }
+  };
+
+  const handleQuantitySelection = (quantity: number, totalPrice: number) => {
+    try {
+      setSelectedService({
+        name: `${currentService.title} (${quantity} ${quantity === 1 ? currentService.quantityLabel?.slice(0, -1) : currentService.quantityLabel})`,
+        price: totalPrice,
+        type: currentService.title.toLowerCase().replace(/[^a-z0-9]/g, '-')
+      });
+      setShowQuantityModal(false);
+      setShowBookingModal(true);
+    } catch (error) {
+      console.error('Error handling quantity selection:', error);
+      // Close modals and fallback to contact
+      setShowQuantityModal(false);
+      window.location.href = 'tel:+919959047238';
+    }
+  };
+
+  const handleSofaSelection = (seaterType: string, price: number) => {
+    try {
+      setSelectedService({
+        name: `${currentService.title} (${seaterType})`,
+        price: price,
+        type: currentService.title.toLowerCase().replace(/[^a-z0-9]/g, '-')
+      });
+      setShowSofaModal(false);
+      setShowBookingModal(true);
+    } catch (error) {
+      console.error('Error handling sofa selection:', error);
+      // Close modals and fallback to contact
+      setShowSofaModal(false);
+      window.location.href = 'tel:+919959047238';
+    }
+  };
+
+  const handleCarpetSelection = (squareFeet: number, price: number) => {
+    try {
+      setSelectedService({
+        name: `${currentService.title} (${squareFeet} sq.ft)`,
+        price: price,
+        type: currentService.title.toLowerCase().replace(/[^a-z0-9]/g, '-')
+      });
+      setShowCarpetModal(false);
+      setShowBookingModal(true);
+    } catch (error) {
+      console.error('Error handling carpet selection:', error);
+      // Close modals and fallback to contact
+      setShowCarpetModal(false);
+      window.location.href = 'tel:+919959047238';
+    }
+  };
+
   const services = [
     {
       icon: Home,
       title: "Home Cleaning",
       description: "Transform your home into a spotless sanctuary with our comprehensive cleaning service",
-      price: "7,400",
+      serviceId: "home-cleaning",
+      price: SERVICES_CONFIG.find(s => s.id === 'home-cleaning')?.basePrice.toLocaleString() || "1,800",
       duration: "2-3",
       features: ["Deep kitchen & bathroom cleaning", "Complete dusting & vacuuming", "Trash removal & sanitization"],
       gradient: "from-emerald-500 to-teal-600",
@@ -40,7 +158,8 @@ const Services = () => {
       icon: Sparkles,
       title: "Deep Cleaning",
       description: "Our most thorough service that leaves no corner untouched in your space",
-      price: "12,400",
+      serviceId: "deep-cleaning",
+      price: SERVICES_CONFIG.find(s => s.id === 'deep-cleaning')?.basePrice.toLocaleString() || "2,800",
       duration: "4-5",
       features: ["Everything in regular cleaning", "Inside appliances cleaning", "Window & glass cleaning"],
       gradient: "from-blue-500 to-cyan-600",
@@ -49,22 +168,24 @@ const Services = () => {
       customImage: deepCleaningImage
     },
     {
-      icon: Building2,
-      title: "Office Cleaning",
-      description: "Professional workspace cleaning that boosts productivity and health",
-      price: "Custom",
-      duration: "Flexible",
-      features: ["Desk & workstation sanitization", "Common areas deep clean", "Restroom maintenance"],
+      icon: Users,
+      title: "House Maiden",
+      description: "Dedicated house maid services for daily household maintenance and care",
+      serviceId: "house-maiden",
+      price: SERVICES_CONFIG.find(s => s.id === 'house-maiden')?.basePrice.toLocaleString() || "1,200",
+      duration: "4-6",
+      features: ["Dish washing & kitchen cleanup", "Floor mopping & sweeping", "Laundry washing & folding", "General housekeeping"],
       gradient: "from-indigo-500 to-purple-600",
       bgColor: "bg-indigo-50",
       popular: false,
-      customImage: officeCleaningImage
+      customImage: houseMaidenImage
     },
     {
       icon: Truck,
       title: "Move-In/Out",
       description: "Complete cleaning solution for your moving needs, leaving spaces pristine",
-      price: "16,500",
+      serviceId: "move-in-out",
+      price: SERVICES_CONFIG.find(s => s.id === 'move-in-out')?.basePrice.toLocaleString() || "3,500",
       duration: "4-6",
       features: ["Empty space deep cleaning", "Cabinet & storage interiors", "All appliance cleaning"],
       gradient: "from-orange-500 to-red-600",
@@ -74,27 +195,76 @@ const Services = () => {
     },
     {
       icon: Sofa,
-      title: "Sofa & Carpet",
-      description: "Specialized deep cleaning for your valuable furniture and carpets",
-      price: "6,600",
+      title: "Sofa Cleaning",
+      description: "Professional sofa shampooing based on number of seaters - starting from ₹300",
+      serviceId: "sofa-cleaning",
+      price: SERVICES_CONFIG.find(s => s.id === 'sofa-cleaning')?.basePrice.toLocaleString() || "350",
       duration: "1-2",
-      features: ["Professional steam cleaning", "Advanced stain removal", "Fabric protection treatment"],
+      features: ["Professional steam cleaning", "Seater-based pricing", "Advanced stain removal", "Fabric protection treatment"],
       gradient: "from-pink-500 to-rose-600",
       bgColor: "bg-pink-50",
       popular: false,
-      customImage: sofaCarpetImage
+      customImage: sofaCleaningImage,
+      isQuantityBased: true,
+      quantityLabel: "sofas"
+    },
+    {
+      icon: Home,
+      title: "Carpet Cleaning",
+      description: "Professional carpet shampooing at ₹20 per square feet with minimum ₹200 charge",
+      serviceId: "carpet-cleaning",
+      price: "20/sq.ft",
+      duration: "1-2",
+      features: ["Professional steam cleaning", "₹20 per square feet", "Advanced stain removal", "Minimum ₹200 charge"],
+      gradient: "from-amber-500 to-orange-600",
+      bgColor: "bg-amber-50",
+      popular: false,
+      customImage: carpetCleaningImage,
+      isQuantityBased: true,
+      quantityLabel: "carpets"
     },
     {
       icon: ShieldCheck,
       title: "Sanitization",
       description: "Hospital-grade sanitization for maximum health and safety protection",
-      price: "9,900",
+      serviceId: "sanitization",
+      price: SERVICES_CONFIG.find(s => s.id === 'sanitization')?.basePrice.toLocaleString() || "2,000",
       duration: "2-3",
       features: ["Hospital-grade disinfection", "High-touch surface treatment", "Air purification service"],
       gradient: "from-green-500 to-emerald-600",
       bgColor: "bg-green-50",
       popular: false,
       customImage: sanitizationImage
+    },
+    {
+      icon: ChefHat,
+      title: "Kitchen Cleaning",
+      description: "Deep kitchen cleaning including appliances, cabinets, and all surfaces",
+      serviceId: "kitchen-cleaning",
+      price: SERVICES_CONFIG.find(s => s.id === 'kitchen-cleaning')?.basePrice.toLocaleString() || "800",
+      duration: "1-2",
+      features: ["Deep appliance cleaning", "Cabinet interior & exterior", "Countertop & backsplash cleaning", "Sink & faucet sanitization"],
+      gradient: "from-yellow-500 to-orange-600",
+      bgColor: "bg-yellow-50",
+      popular: false,
+      customImage: kitchenCleaningImage,
+      isQuantityBased: true,
+      quantityLabel: "kitchens"
+    },
+    {
+      icon: Bath,
+      title: "Washroom Cleaning",
+      description: "Thorough washroom cleaning with sanitization and deep scrubbing",
+      serviceId: "washroom-cleaning",
+      price: SERVICES_CONFIG.find(s => s.id === 'washroom-cleaning')?.basePrice.toLocaleString() || "600",
+      duration: "1",
+      features: ["Deep toilet & shower cleaning", "Tile & grout sanitization", "Mirror & fixture polishing", "Floor deep cleaning"],
+      gradient: "from-sky-500 to-blue-600",
+      bgColor: "bg-sky-50",
+      popular: false,
+      customImage: washroomCleaningImage,
+      isQuantityBased: true,
+      quantityLabel: "washrooms"
     },
   ];
 
@@ -122,13 +292,14 @@ const Services = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+        {/* Services Grid - Optimized for 9 cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-[1400px] mx-auto">
           {services.map((service, index) => {
             const IconComponent = service.icon;
             return (
               <div 
                 key={service.title}
-                className={`group relative bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-700 transform hover:-translate-y-2 animate-fade-in-up min-h-[600px] ${
+                className={`group relative bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-700 transform hover:-translate-y-2 animate-fade-in-up min-h-[580px] md:min-h-[600px] ${
                   service.popular ? 'ring-2 ring-teal-500 ring-offset-4' : ''
                 }`}
                 style={{ animationDelay: `${index * 0.1}s` }}
@@ -221,7 +392,7 @@ const Services = () => {
                   {/* CTA Button */}
                   <Button 
                     className="w-full bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white py-4 rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 group/btn"
-                    onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                    onClick={() => handleServiceBooking(service)}
                   >
                     <span className="flex items-center justify-center gap-2">
                       Book {service.title}
@@ -250,7 +421,20 @@ const Services = () => {
               <Button 
                 size="lg"
                 className="bg-white text-teal-600 hover:bg-teal-50 px-8 py-4 rounded-2xl font-semibold shadow-xl hover:shadow-2xl transition-all duration-300"
-                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => {
+                  try {
+                    const contactElement = document.getElementById('contact');
+                    if (contactElement) {
+                      contactElement.scrollIntoView({ behavior: 'smooth' });
+                    } else {
+                      // Fallback: scroll to bottom
+                      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                    }
+                  } catch (error) {
+                    console.error('Error scrolling to contact:', error);
+                    // Silent fail - don't break the UI
+                  }
+                }}
               >
                 Get Custom Quote
               </Button>
@@ -258,6 +442,60 @@ const Services = () => {
           </div>
         </div>
       </div>
+      
+      {/* BHK Selection Modal */}
+      {currentService && (
+        <BHKSelectionModal
+          isOpen={showBHKModal}
+          onClose={() => setShowBHKModal(false)}
+          serviceName={currentService.title}
+          serviceType={currentService.serviceId || currentService.title.toLowerCase().replace(/[^a-z0-9]/g, '-')}
+          basePrices={getUnifiedPricing(currentService.serviceId || 'home-cleaning')}
+          onBHKSelected={handleBHKSelection}
+        />
+      )}
+      
+      {/* Quantity Selection Modal */}
+      {currentService && currentService.isQuantityBased && currentService.serviceId !== 'sofa-cleaning' && currentService.serviceId !== 'carpet-cleaning' && (
+        <QuantitySelectionModal
+          isOpen={showQuantityModal}
+          onClose={() => setShowQuantityModal(false)}
+          serviceName={currentService.title}
+          serviceType={currentService.serviceId as "kitchen-cleaning" | "washroom-cleaning"}
+          onQuantitySelected={handleQuantitySelection}
+        />
+      )}
+      
+      {/* Sofa Selection Modal */}
+      {currentService && (
+        <SofaSelectionModal
+          isOpen={showSofaModal}
+          onClose={() => setShowSofaModal(false)}
+          serviceName={currentService.title}
+          onSofaSelected={handleSofaSelection}
+        />
+      )}
+      
+      {/* Carpet Selection Modal */}
+      {currentService && (
+        <CarpetSelectionModal
+          isOpen={showCarpetModal}
+          onClose={() => setShowCarpetModal(false)}
+          serviceName={currentService.title}
+          onCarpetSelected={handleCarpetSelection}
+        />
+      )}
+      
+      {/* Booking Modal */}
+      {selectedService && (
+        <BookingModal
+          isOpen={showBookingModal}
+          onClose={() => setShowBookingModal(false)}
+          serviceName={selectedService.name}
+          serviceType={selectedService.type}
+          basePrice={selectedService.price}
+        />
+      )}
     </section>
   );
 };

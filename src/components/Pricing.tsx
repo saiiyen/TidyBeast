@@ -6,27 +6,49 @@ import CustomQuoteForm from "./CustomQuoteForm";
 import BookingModal from "./BookingModal";
 import mascotImage from "@/assets/tidybeast-mascot.png";
 import largeHomesImage from "@/assets/LargeHomes.png";
-import commercialSpacesImage from "@/assets/CommercialSpaces.png";
+import doorMatCleaningImage from "@/assets/DC.png";
 import specialEventsImage from "@/assets/SpecialEvents.png";
+import { SERVICES_CONFIG, BHK_MULTIPLIERS, BHK_OPTIONS } from "@/config/pricing";
 
 const Pricing = () => {
   const [selectedPlan, setSelectedPlan] = useState<{name: string, price: number, type: string} | null>(null);
   const [showBookingModal, setShowBookingModal] = useState(false);
+  const [selectedBHK, setSelectedBHK] = useState<string>('2 BHK');
 
-  const handleBookNow = (plan: any) => {
-    const priceNumber = parseInt(plan.price.replace('₹', '').replace(',', ''));
+  interface PricingPlan {
+    name: string;
+    basePrice: number;
+    price: string;
+    duration: string;
+    description: string;
+    features: string[];
+    popular: boolean;
+    color: string;
+  }
+
+  const calculatePrice = (basePrice: number): string => {
+    const multiplier = BHK_MULTIPLIERS[selectedBHK as keyof typeof BHK_MULTIPLIERS] || 1;
+    const adjustedPrice = Math.round(basePrice * multiplier);
+    return `₹${adjustedPrice.toLocaleString()}`;
+  };
+
+  const handleBookNow = (plan: PricingPlan) => {
+    const multiplier = BHK_MULTIPLIERS[selectedBHK as keyof typeof BHK_MULTIPLIERS] || 1;
+    const adjustedPrice = Math.round(plan.basePrice * multiplier);
+    
     setSelectedPlan({
       name: plan.name,
-      price: priceNumber,
+      price: adjustedPrice,
       type: 'Home Cleaning'
     });
     setShowBookingModal(true);
   };
 
-  const plans = [
+  // Use actual service configurations for consistent pricing
+  const basePlans = [
     {
-      name: "Basic Clean",
-      price: "₹7,400",
+      name: "Home Cleaning",
+      basePrice: SERVICES_CONFIG.find(s => s.id === 'home-cleaning')?.basePrice || 1800,
       duration: "per visit",
       description: "Perfect for regular maintenance cleaning",
       features: [
@@ -40,8 +62,8 @@ const Pricing = () => {
       color: "border-border"
     },
     {
-      name: "Deep Clean",
-      price: "₹12,400",
+      name: "Deep Cleaning",
+      basePrice: SERVICES_CONFIG.find(s => s.id === 'deep-cleaning')?.basePrice || 2800,
       duration: "per visit",
       description: "Comprehensive cleaning for every corner",
       features: [
@@ -57,27 +79,31 @@ const Pricing = () => {
     },
     {
       name: "Premium Package",
-      price: "₹16,500",
+      basePrice: SERVICES_CONFIG.find(s => s.id === 'sanitization')?.basePrice || 2000,
       duration: "per visit",
       description: "The ultimate cleaning experience",
       features: [
-        "5-6 hour service",
-        "Everything in Deep Clean",
-        "Inside refrigerator & oven",
-        "Garage cleaning",
-        "Patio/balcony cleaning",
-        "Laundry service",
-        "Organization assistance"
+        "2-3 hour service",
+        "Hospital-grade disinfection",
+        "High-touch surface treatment",
+        "Air purification service",
+        "Complete sanitization"
       ],
       popular: false,
       color: "border-border"
     }
   ];
+  
+  // Convert base plans to display plans with adjusted prices
+  const plans = basePlans.map(plan => ({
+    ...plan,
+    price: calculatePrice(plan.basePrice)
+  }));
 
   const subscriptions = [
-    { frequency: "Weekly", discount: "20% off", popular: true },
-    { frequency: "Bi-weekly", discount: "15% off", popular: false },
-    { frequency: "Monthly", discount: "10% off", popular: false }
+    { frequency: "Weekly", discount: "25% off", popular: true },
+    { frequency: "Bi-weekly", discount: "20% off", popular: false },
+    { frequency: "Monthly", discount: "15% off", popular: false }
   ];
 
   return (
@@ -98,29 +124,35 @@ const Pricing = () => {
           <h2 className="text-4xl md:text-6xl font-black text-gray-900 mb-6">
             Choose Your Perfect <span className="bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">Plan</span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed mb-8">
             Flexible pricing designed for every home and budget. No hidden fees, no surprises.
           </p>
-        </div>
-
-        {/* Subscription Savings */}
-        <div className="flex justify-center mb-16 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-          <div className="bg-gradient-to-r from-orange-50 to-red-50 rounded-2xl p-6 border border-orange-200">
-            <div className="text-center">
-              <h3 className="text-lg font-bold text-orange-800 mb-2">💰 Save More with Subscriptions</h3>
-              <div className="flex flex-wrap justify-center gap-4">
-                {subscriptions.map((sub, index) => (
-                  <div key={sub.frequency} className="flex items-center gap-2">
-                    <div className="w-3 h-3 bg-orange-400 rounded-full"></div>
-                    <span className="text-sm font-medium text-orange-700">
-                      {sub.frequency}: <span className="font-bold">{sub.discount}</span>
-                    </span>
-                  </div>
-                ))}
+          
+          {/* BHK Selection */}
+              <div className="flex justify-center mb-8">
+            <div className="bg-white rounded-2xl p-4 shadow-lg border border-gray-200">
+              <div className="flex items-center gap-4">
+                <span className="text-sm font-semibold text-gray-700">Select Home Size:</span>
+                <div className="flex gap-2">
+                  {BHK_OPTIONS.map((option) => (
+                    <button
+                      key={option.value}
+                      onClick={() => setSelectedBHK(option.value)}
+                      className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 ${
+                        selectedBHK === option.value
+                          ? 'bg-gradient-to-r from-teal-600 to-cyan-600 text-white shadow-md'
+                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      }`}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
         </div>
+
 
         {/* Pricing Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-20">
@@ -216,13 +248,13 @@ const Pricing = () => {
                 <div className="bg-white/10 rounded-2xl p-4 hover:bg-white/20 transition-all duration-300 group">
                   <div className="w-16 h-16 mb-4 rounded-xl overflow-hidden">
                     <img 
-                      src={commercialSpacesImage} 
-                      alt="Commercial Spaces" 
+                      src={doorMatCleaningImage} 
+                      alt="Door Mats Cleaning" 
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
-                  <div className="font-semibold mb-1">Commercial Spaces</div>
-                  <div className="text-sm text-teal-100">Office buildings, retail, and more</div>
+                  <div className="font-semibold mb-1">Door Mats Cleaning</div>
+                  <div className="text-sm text-teal-100">Professional mat and rug deep cleaning</div>
                 </div>
                 <div className="bg-white/10 rounded-2xl p-4 hover:bg-white/20 transition-all duration-300 group">
                   <div className="w-16 h-16 mb-4 rounded-xl overflow-hidden">

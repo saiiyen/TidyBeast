@@ -6,7 +6,7 @@ const Testimonials = () => {
   const testimonials = [
     {
       name: "Priya Sharma",
-      location: "Mumbai",
+      location: "Gachibowli, Hyderabad",
       rating: 5,
       text: "TidyBeast transformed my home! Their eco-friendly approach and attention to detail is unmatched. I now have more time for my family.",
       type: "testimonial",
@@ -14,35 +14,35 @@ const Testimonials = () => {
     },
     {
       name: "Rajesh Kumar",
-      location: "Delhi", 
+      location: "Hitech City, Hyderabad", 
       rating: 5,
       text: "Professional team, arrived on time, left my office spotless. Highly recommend!",
       type: "testimonial",
       color: "bg-green-50"
     },
     {
-      stat: "100%",
-      subtitle: "Customer satisfaction rate",
+      stat: "4.9",
+      subtitle: "Average Rating",
       type: "stat",
       color: "bg-blue-50"
     },
     {
       name: "Meera Reddy",
-      location: "Hyderabad",
+      location: "Jubilee Hills, Hyderabad",
       rating: 5,
       text: "Booked online in minutes. The process was so simple and the results exceeded expectations.",
       type: "testimonial",
       color: "bg-purple-50"
     },
     {
-      stat: "2x",
-      subtitle: "Faster than traditional cleaning services",
+      stat: "10+",
+      subtitle: "Cities Served across Hyderabad",
       type: "stat",
       color: "bg-orange-50"
     },
     {
       name: "Anita Patel",
-      location: "Bangalore",
+      location: "Banjara Hills, Hyderabad",
       rating: 5,
       text: "Finally found a cleaning service I can trust. They use safe products and my kids love them!",
       type: "testimonial",
@@ -183,7 +183,7 @@ const Testimonials = () => {
             </div>
             <div className="flex items-center gap-3 bg-gradient-card rounded-full px-6 py-3 shadow-soft hover:shadow-elegant transition-all duration-300 transform hover:scale-105">
               <img src={mascotImage} alt="TidyBeast" className="w-5 h-5 animate-bounce-gentle" />
-              <span className="font-semibold text-card-foreground">10,000+ Happy Customers</span>
+              <span className="font-semibold text-card-foreground">always Happy Customers</span>
             </div>
           </div>
           

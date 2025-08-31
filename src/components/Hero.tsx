@@ -1,16 +1,122 @@
 import { Button } from "@/components/ui/button";
-import { Star, Sparkles, Shield, Leaf, Clock, ArrowRight } from "lucide-react";
-import { useState } from "react";
+import { Star, Sparkles, Shield, Leaf, Clock, ArrowRight, Home, ChevronDown } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
 import mascotImage from "@/assets/tidybeast-mascot.png";
 import citiesServedImage from "@/assets/cities-served.svg";
 import customerSatisfactionImage from "@/assets/customer-satisfaction.svg";
 import BookingModal from "./BookingModal";
+import ServiceSelectionModal from "./ServiceSelectionModal";
+import { SERVICES_CONFIG, BHK_OPTIONS } from "@/config/pricing";
+
+// Animated counter component
+const AnimatedCounter = ({ targetValue, duration = 2000, suffix = "", prefix = "" }: {
+  targetValue: string;
+  duration?: number;
+  suffix?: string;
+  prefix?: string;
+}) => {
+  const [count, setCount] = useState(0);
+  const [hasStarted, setHasStarted] = useState(false);
+  const countRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasStarted) {
+          setHasStarted(true);
+          
+          // Extract numeric value from targetValue
+          const numericValue = parseFloat(targetValue.replace(/[^0-9.]/g, ''));
+          
+          if (isNaN(numericValue)) {
+            return;
+          }
+
+          const startTime = Date.now();
+          const startValue = 0;
+          
+          const updateCount = () => {
+            const currentTime = Date.now();
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            
+            // Easing function for smooth animation
+            const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+            const easedProgress = easeOutCubic(progress);
+            
+            const currentCount = startValue + (numericValue - startValue) * easedProgress;
+            setCount(currentCount);
+            
+            if (progress < 1) {
+              requestAnimationFrame(updateCount);
+            }
+          };
+          
+          requestAnimationFrame(updateCount);
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    if (countRef.current) {
+      observer.observe(countRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [targetValue, duration, hasStarted]);
+
+  const formatValue = (value: number) => {
+    if (targetValue.includes('%')) {
+      return Math.floor(value);
+    }
+    if (targetValue.includes('.')) {
+      return value.toFixed(1);
+    }
+    return Math.floor(value);
+  };
+
+  return (
+    <div ref={countRef} className="text-3xl font-bold text-gray-900 mb-2">
+      {prefix}{hasStarted ? formatValue(count) : '0'}{suffix}
+    </div>
+  );
+};
 
 const Hero = () => {
   const [showBookingModal, setShowBookingModal] = useState(false);
+  const [showBHKSelector, setShowBHKSelector] = useState(false);
+  const [selectedBHK, setSelectedBHK] = useState<string>('');
+  
+  // Use home cleaning service as base for Hero pricing display
+  const homeCleaningService = SERVICES_CONFIG.find(s => s.id === 'home-cleaning') || SERVICES_CONFIG[0];
+  
+  const bhkOptions = BHK_OPTIONS.map(option => {
+    const price = homeCleaningService.pricing[option.value as keyof typeof homeCleaningService.pricing];
+    const basePrice = homeCleaningService.basePrice;
+    return {
+      ...option,
+      price: `₹${price.toLocaleString()}`,
+      originalPrice: `₹${basePrice.toLocaleString()}`,
+      popular: option.popular || false
+    };
+  });
 
   const handleBookNow = () => {
-    setShowBookingModal(true);
+    if (!showBHKSelector) {
+      setShowBHKSelector(true);
+    } else if (selectedBHK) {
+      setShowBookingModal(true);
+      setShowBHKSelector(false);
+    }
+  };
+  
+  const handleBHKSelect = (bhk: string) => {
+    setSelectedBHK(bhk);
+    // Auto-proceed to booking after selection
+    setTimeout(() => {
+      setShowBookingModal(true);
+      setShowBHKSelector(false);
+    }, 300);
   };
 
   return (
@@ -54,7 +160,7 @@ const Hero = () => {
             </div>
 
             {/* Main Headline */}
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-gray-900 mb-6 leading-tight animate-fade-in-up-large" style={{ animationDelay: '0.2s' }}>
+            <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black text-gray-900 mb-6 leading-tight animate-fade-in-up-large" style={{ animationDelay: '0.2s' }}>
               India's Most
               <br />
               <span className="bg-gradient-to-r from-teal-600 via-cyan-600 to-emerald-600 bg-clip-text text-transparent relative">
@@ -90,23 +196,93 @@ const Hero = () => {
             </div>
 
             {/* CTA Section */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16 animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
-              <Button 
-                size="lg"
-                className="bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white px-8 py-4 rounded-2xl font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 group"
-                onClick={handleBookNow}
-              >
-                Book Your Cleaning Now
-                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-              </Button>
-              <Button 
-                variant="outline"
-                size="lg"
-                className="border-2 border-gray-300 text-gray-700 hover:border-teal-500 hover:text-teal-600 px-8 py-4 rounded-2xl font-semibold bg-white/70 backdrop-blur-sm hover:bg-white transition-all duration-300"
-                onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
-              >
-                Explore Services
-              </Button>
+            <div className="flex flex-col gap-6 justify-center items-center mb-16 animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
+              {/* Main CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <Button 
+                  size="lg"
+                  className="bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white px-8 py-4 rounded-2xl font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 group relative"
+                  onClick={handleBookNow}
+                >
+                  <Home className="w-5 h-5 mr-2" />
+                  {showBHKSelector ? 'Select Your Home Size' : 'Book Your Cleaning Now'}
+                  <ChevronDown className={`w-5 h-5 ml-2 group-hover:translate-y-1 transition-transform ${showBHKSelector ? 'rotate-180' : ''}`} />
+                </Button>
+                <Button 
+                  variant="outline"
+                  size="lg"
+                  className="border-2 border-gray-300 text-gray-700 hover:border-teal-500 hover:text-teal-600 px-8 py-4 rounded-2xl font-semibold bg-white/70 backdrop-blur-sm hover:bg-white transition-all duration-300"
+                  onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
+                >
+                  Explore Services
+                </Button>
+              </div>
+              
+              {/* BHK Selector */}
+              {showBHKSelector && (
+                <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-6 shadow-2xl border border-gray-100 max-w-4xl w-full mx-auto animate-fade-in-up">
+                  <div className="text-center mb-6">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">Choose Your Home Size</h3>
+                    <p className="text-gray-600">Select your home size to get accurate pricing</p>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                    {bhkOptions.map((option, index) => (
+                      <div
+                        key={option.value}
+                        className={`relative cursor-pointer group transition-all duration-300 hover:scale-105 ${
+                          option.popular ? 'order-first md:order-none' : ''
+                        }`}
+                        onClick={() => handleBHKSelect(option.value)}
+                      >
+                        {option.popular && (
+                          <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
+                            <div className="bg-gradient-to-r from-orange-400 to-red-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+                              Popular
+                            </div>
+                          </div>
+                        )}
+                        
+                        <div className={`bg-white rounded-2xl p-4 border-2 transition-all duration-300 group-hover:border-teal-500 group-hover:shadow-lg ${
+                          option.popular 
+                            ? 'border-teal-500 ring-2 ring-teal-200 shadow-lg' 
+                            : 'border-gray-200'
+                        }`}>
+                          <div className="text-center">
+                            <div className={`w-12 h-12 mx-auto mb-3 rounded-xl flex items-center justify-center ${
+                              option.popular 
+                                ? 'bg-gradient-to-r from-teal-600 to-cyan-600 text-white' 
+                                : 'bg-gray-100 text-gray-600'
+                            }`}>
+                              <Home className="w-6 h-6" />
+                            </div>
+                            
+                            <h4 className="font-bold text-gray-900 mb-1">{option.label}</h4>
+                            <div className="text-lg font-bold text-teal-600 mb-1">{option.price}</div>
+                            
+                            <div className={`mt-3 w-full py-2 px-3 rounded-lg text-sm font-semibold transition-all duration-300 ${
+                              option.popular
+                                ? 'bg-gradient-to-r from-teal-600 to-cyan-600 text-white'
+                                : 'bg-gray-100 text-gray-700 group-hover:bg-teal-100 group-hover:text-teal-700'
+                            }`}>
+                              Select
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <div className="text-center mt-6">
+                    <button
+                      onClick={() => setShowBHKSelector(false)}
+                      className="text-gray-500 hover:text-gray-700 text-sm font-medium transition-colors duration-300"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
@@ -117,15 +293,15 @@ const Hero = () => {
                 icon: Star,
                 value: "4.9",
                 label: "Average Rating",
-                subtext: "from 10,000+ reviews",
+                subtext: "",
                 color: "text-yellow-500",
                 image: null
               },
               {
                 icon: Shield,
-                value: "50+",
+                value: "10+",
                 label: "Cities Served",
-                subtext: "across India",
+                subtext: "across Hyderabad",
                 color: "text-teal-600",
                 image: citiesServedImage
               },
@@ -148,7 +324,11 @@ const Hero = () => {
                     <stat.icon className={`w-8 h-8 ${stat.color}`} />
                   </div>
                 )}
-                <div className="text-3xl font-bold text-gray-900 mb-2">{stat.value}</div>
+                <AnimatedCounter 
+                  targetValue={stat.value} 
+                  suffix={stat.value.includes('%') ? '%' : stat.value.includes('+') ? '+' : ''}
+                  duration={2000 + index * 500}
+                />
                 <div className="text-lg font-semibold text-gray-700 mb-1">{stat.label}</div>
                 <div className="text-sm text-gray-500">{stat.subtext}</div>
               </div>
@@ -157,13 +337,11 @@ const Hero = () => {
         </div>
       </div>
       
-      {/* Booking Modal */}
-      <BookingModal
+      {/* Service Selection Modal */}
+      <ServiceSelectionModal
         isOpen={showBookingModal}
         onClose={() => setShowBookingModal(false)}
-        serviceName="Home Cleaning Service"
-        serviceType="General Cleaning"
-        basePrice={9999}
+        preselectedBHK={selectedBHK}
       />
     </section>
   );

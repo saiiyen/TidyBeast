@@ -344,24 +344,81 @@ const About = () => {
         </div>
 
 
-        {/* CTA Section */}
+        {/* CTA Section - Enhanced with prominent mascot */}
         <div className="text-center animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
-          <div className="bg-gradient-hero rounded-2xl p-8 text-primary-foreground max-w-2xl mx-auto shadow-elegant relative overflow-hidden">
-            {/* Background mascot */}
-            <div className="absolute top-4 right-4 opacity-20">
-              <img src={mascotImage} alt="TidyBeast" className="w-16 h-16 animate-bounce-gentle filter brightness-0 invert" />
+          <div className="bg-gradient-hero rounded-3xl p-8 text-primary-foreground max-w-4xl mx-auto shadow-elegant relative overflow-hidden">
+            {/* Animated floating particles background */}
+            <div className="absolute inset-0 pointer-events-none">
+              <div className="absolute top-10 left-10 w-4 h-4 bg-white/30 rounded-full animate-float"></div>
+              <div className="absolute bottom-20 left-20 w-3 h-3 bg-white/20 rounded-full animate-bounce-gentle" style={{ animationDelay: '0.5s' }}></div>
+              <div className="absolute top-20 right-20 w-2 h-2 bg-white/40 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
+              <div className="absolute bottom-32 right-32 w-3 h-3 bg-white/25 rounded-full animate-float" style={{ animationDelay: '1.5s' }}></div>
+            </div>
+
+            {/* Main content area with mascot integration */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center relative z-10">
+              {/* Left side - Text content */}
+              <div className="text-center md:text-left">
+                <h3 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
+                  Ready to experience the <br/>
+                  <span className="text-accent-foreground drop-shadow-lg">TidyBeast</span> difference?
+                </h3>
+                <p className="mb-6 text-lg opacity-95 leading-relaxed">
+                  Join thousands of families across India who trust us with their homes.
+                </p>
+                <Button 
+                  className="bg-white text-primary px-10 py-4 rounded-xl font-bold text-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-110 hover:animate-pulse-glow group relative overflow-hidden"
+                  onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                >
+                  {/* Button glow effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-accent to-primary opacity-0 group-hover:opacity-20 transition-opacity duration-500 rounded-xl"></div>
+                  <span className="relative z-10">Start Your Journey</span>
+                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-accent rounded-full animate-ping opacity-75"></div>
+                </Button>
+              </div>
+
+              {/* Right side - Prominent animated mascot */}
+              <div className="flex justify-center md:justify-end">
+                <div className="relative">
+                  {/* Main mascot - now prominent and animated */}
+                  <div className="relative transform hover:scale-110 transition-all duration-500 cursor-pointer group">
+                    <img 
+                      src={mascotImage} 
+                      alt="TidyBeast Mascot" 
+                      className="w-32 h-32 md:w-40 md:h-40 animate-bounce-gentle hover:animate-float transition-all duration-300 drop-shadow-2xl filter brightness-110 contrast-110" 
+                    />
+                    
+                    {/* Glowing ring around mascot */}
+                    <div className="absolute inset-0 rounded-full bg-white/20 animate-ping opacity-30"></div>
+                    <div className="absolute inset-2 rounded-full bg-accent/30 animate-pulse opacity-40" style={{ animationDelay: '0.5s' }}></div>
+                    
+                    {/* Floating sparkle effects around mascot */}
+                    <div className="absolute -top-2 -right-2 w-4 h-4 bg-yellow-300 rounded-full animate-bounce-gentle opacity-80">✨</div>
+                    <div className="absolute -bottom-3 -left-3 w-3 h-3 bg-blue-300 rounded-full animate-float opacity-90" style={{ animationDelay: '0.7s' }}>💫</div>
+                    <div className="absolute top-1/2 -right-6 w-2 h-2 bg-pink-300 rounded-full animate-ping opacity-60" style={{ animationDelay: '1.2s' }}></div>
+                    <div className="absolute top-1/4 -left-4 w-3 h-3 bg-green-300 rounded-full animate-bounce-gentle opacity-70" style={{ animationDelay: '0.3s' }}>🌟</div>
+                    
+                    {/* Speech bubble */}
+                    <div className="absolute -top-8 -left-8 bg-white text-primary rounded-lg px-3 py-1 text-sm font-medium shadow-lg transform group-hover:scale-105 transition-all duration-300 animate-bounce-gentle opacity-0 group-hover:opacity-100">
+                      Let's clean! 🧽
+                      <div className="absolute bottom-0 left-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-white transform translate-y-full"></div>
+                    </div>
+                  </div>
+                  
+                  {/* Decorative elements */}
+                  <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 text-white/80 text-center">
+                    <div className="flex items-center gap-1 text-sm font-medium animate-pulse">
+                      <span>🏠</span>
+                      <span>Your Cleaning Hero</span>
+                      <span>🦸‍♂️</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             
-            <h3 className="text-2xl font-bold mb-4">Ready to experience the TidyBeast difference?</h3>
-            <p className="mb-6 opacity-90">
-              Join families across India who trust us with their homes.
-            </p>
-            <Button 
-              className="bg-white text-primary px-8 py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105 hover:animate-pulse-glow"
-              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-            >
-              Start Your Journey
-            </Button>
+            {/* Bottom accent line */}
+            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-accent via-white to-accent opacity-50"></div>
           </div>
         </div>
       </div>

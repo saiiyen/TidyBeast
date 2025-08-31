@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Copy, Check, QrCode, CreditCard } from "lucide-react";
+import { Copy, Check, CreditCard } from "lucide-react";
 import { toast } from "sonner";
 
 interface PaymentModalProps {
@@ -21,7 +21,6 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
   serviceName,
   onPaymentSuccess,
 }) => {
-  const [paymentMethod, setPaymentMethod] = useState<'qr' | 'upi'>('qr');
   const [transactionId, setTransactionId] = useState('');
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -35,9 +34,6 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const generateQRCodeData = () => {
-    return `upi://pay?pa=${upiId}&pn=BATTA%20BHANU%20PRAKASH%20REDDY&am=${amount}&cu=INR&tn=Payment%20for%20${encodeURIComponent(serviceName)}`;
-  };
 
   const handlePaymentConfirmation = async () => {
     if (!transactionId.trim()) {
@@ -75,97 +71,50 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
             <p className="text-2xl font-bold text-teal-600">₹{amount}</p>
           </div>
 
-          {/* Payment Method Selection */}
+          {/* Payment Method Info */}
           <div className="space-y-3">
-            <Label className="text-sm font-medium text-gray-700">Choose Payment Method</Label>
-            <div className="grid grid-cols-2 gap-2">
-              <Button
-                variant={paymentMethod === 'qr' ? 'default' : 'outline'}
-                onClick={() => setPaymentMethod('qr')}
-                className="flex items-center gap-2"
-              >
-                <QrCode className="w-4 h-4" />
-                QR Code
-              </Button>
-              <Button
-                variant={paymentMethod === 'upi' ? 'default' : 'outline'}
-                onClick={() => setPaymentMethod('upi')}
-                className="flex items-center gap-2"
-              >
-                <CreditCard className="w-4 h-4" />
-                UPI ID
-              </Button>
+            <div className="flex items-center gap-2 text-center justify-center">
+              <CreditCard className="w-5 h-5 text-teal-600" />
+              <Label className="text-lg font-semibold text-gray-900">Pay using UPI ID</Label>
             </div>
           </div>
 
-          {/* Payment Methods */}
-          {paymentMethod === 'qr' && (
-            <div className="space-y-4">
-              <div className="text-center">
-                <div className="inline-flex items-center gap-2 mb-4">
-                  <img 
-                    src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%236B46C1'/%3E%3Ctext x='50' y='60' fill='white' text-anchor='middle' font-size='20' font-weight='bold'%3EP%3C/text%3E%3C/svg%3E" 
-                    alt="PhonePe" 
-                    className="w-8 h-8"
-                  />
-                  <span className="font-semibold text-gray-900">PhonePe</span>
-                </div>
-                
-                {/* QR Code */}
-                <div className="bg-white border-2 border-gray-200 rounded-lg p-4 mx-auto w-64 h-64 flex items-center justify-center">
-                  <div className="text-center space-y-2">
-                    <img 
-                      src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDI5IDI5IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIyOSIgaGVpZ2h0PSIyOSIgZmlsbD0id2hpdGUiLz48cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTEgMUg3VjdIMVYxWk0yIDJWNkg2VjJIMlpNMTAgMUgxNlY3SDEwVjFaTTExIDJWNkgxNVYySDExWk0xOSAxSDI4VjdIMTlWMVpNMjAgMlY2SDI3VjJIMjBaTTEgMTBIN1YxNkgxVjEwWk0yIDExVjE1SDZWMTFIMlpNMTkgMTBIMjhWMTZIMTlWMTBaTTIwIDExVjE1SDI3VjExSDIwWk0xMSAxMUgxM1YxM0gxMVYxMVpNMTUgMTFIMTZWMTJIMTVWMTFaTTEwIDEzSDE2VjE0SDEwVjEzWk0xNyAxM0gxOFYxNEgxN1YxM1pNOCAxNUgxMFYxNkg4VjE1Wk0xNSAxNUgxN1YxNkgxNVYxNVpNMSAxOUg3VjI4SDFWMTlaTTIgMjBWMjdINlYyMEgyWk0xMCAxOUgxMVYyMEgxMFYxOVpNMTMgMTlIMTRWMjBIMTNWMTlaTTE2IDE5SDE3VjIwSDE2VjE5Wk0xOSAxOUgyMVYyMEgxOVYxOVpNMjIgMTlIMjRWMjBIMjJWMTlaTTI2IDE5SDI4VjIwSDI2VjE5Wk0xMCAyMUgxM1YyMkgxMFYyMVpNMTUgMjFIMTZWMjJIMTVWMjFaTTE4IDIxSDE5VjIySDE4VjIxWk0yMSAyMUgyMlYyMkgyMVYyMVpNMjQgMjFIMjdWMjJIMjRWMjFaTTggMjNIMTBWMjRIOFYyM1pNMTEgMjNIMTNWMjRIMTFWMjNaTTE0IDIzSDE1VjI0SDE0VjIzWk0xNiAyM0gxOFYyNEgxNlYyM1pNMTkgMjNIMjFWMjRIMTlWMjNaTTIzIDIzSDI2VjI0SDIzVjIzWk0yNyAyM0gyOFYyNEgyN1YyM1pNMTAgMjVIMTJWMjZIMTBWMjVaTTEzIDI1SDE1VjI2SDEzVjI1Wk0xNiAyNUgxN1YyNkgxNlYyNVpNMTggMjVIMTlWMjZIMThWMjVaTTIxIDI1SDI0VjI2SDIxVjI1Wk0yNSAyNUgyNlYyNkgyNVYyNVpNMjcgMjVIMjhWMjZIMjdWMjVaTTggMjdIMTFWMjhIOFYyN1pNMTIgMjdIMTVWMjhIMTJWMjdaTTE2IDI3SDE4VjI4SDE2VjI3Wk0xOSAyN0gyMVYyOEgxOVYyN1pNMjIgMjdIMjNWMjhIMjJWMjdaTTI0IDI3SDI1VjI4SDI0VjI3Wk0yNyAyN0gyOFYyOEgyN1YyN1oiIGZpbGw9ImJsYWNrIi8+PC9zdmc+"
-                      alt="PhonePe QR Code" 
-                      className="w-48 h-48 border border-gray-300 rounded-lg"
-                    />
-                  </div>
-                </div>
-                
-                <p className="text-sm text-gray-600 mt-2">
-                  Scan this QR code with any UPI app to pay ₹{amount}
-                </p>
+          {/* UPI Payment Section */}
+          <div className="space-y-4">
+            <div className="bg-white border border-gray-200 rounded-lg p-4">
+              <Label className="text-sm font-medium text-gray-700 block mb-2">
+                UPI ID
+              </Label>
+              <div className="flex items-center gap-2">
+                <Input
+                  value={upiId}
+                  readOnly
+                  className="flex-1 bg-gray-50 text-center font-medium"
+                />
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={copyUpiId}
+                  className="flex items-center gap-1"
+                >
+                  {copied ? (
+                    <>
+                      <Check className="w-4 h-4" />
+                      Copied
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-4 h-4" />
+                      Copy
+                    </>
+                  )}
+                </Button>
               </div>
+              <p className="text-sm text-gray-500 mt-2">
+                Copy this UPI ID and pay ₹{amount} using any UPI app like PhonePe, GPay, Paytm, etc.
+              </p>
             </div>
-          )}
-
-          {paymentMethod === 'upi' && (
-            <div className="space-y-4">
-              <div className="bg-white border border-gray-200 rounded-lg p-4">
-                <Label className="text-sm font-medium text-gray-700 block mb-2">
-                  UPI ID
-                </Label>
-                <div className="flex items-center gap-2">
-                  <Input
-                    value={upiId}
-                    readOnly
-                    className="flex-1 bg-gray-50"
-                  />
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={copyUpiId}
-                    className="flex items-center gap-1"
-                  >
-                    {copied ? (
-                      <>
-                        <Check className="w-4 h-4" />
-                        Copied
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="w-4 h-4" />
-                        Copy
-                      </>
-                    )}
-                  </Button>
-                </div>
-                <p className="text-sm text-gray-500 mt-2">
-                  Copy this UPI ID and pay ₹{amount} using any UPI app
-                </p>
-              </div>
-            </div>
-          )}
+          </div>
 
           {/* Transaction ID Input */}
           <div className="space-y-2">

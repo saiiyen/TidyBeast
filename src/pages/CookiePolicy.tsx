@@ -128,11 +128,11 @@ const CookiePolicy = () => {
                 For specific instructions on how to manage cookies in your browser, please refer to your browser's help documentation:
               </p>
               <ul className="list-disc pl-6 text-gray-700 space-y-1">
-                <li>Google Chrome: Settings > Privacy and Security > Cookies and other site data</li>
-                <li>Mozilla Firefox: Options > Privacy & Security > Cookies and Site Data</li>
-                <li>Safari: Preferences > Privacy > Cookies and website data</li>
-                <li>Microsoft Edge: Settings > Cookies and site permissions</li>
-                <li>Internet Explorer: Tools > Internet Options > Privacy</li>
+                <li>Google Chrome: Settings {">"}  Privacy and Security {">"}  Cookies and other site data</li>
+                <li>Mozilla Firefox: Options {">"}  Privacy & Security {">"}  Cookies and Site Data</li>
+                <li>Safari: Preferences {">"}  Privacy {">"}  Cookies and website data</li>
+                <li>Microsoft Edge: Settings {">"}  Cookies and site permissions</li>
+                <li>Internet Explorer: Tools {">"}  Internet Options {">"}  Privacy</li>
               </ul>
             </section>
 
@@ -142,8 +142,8 @@ const CookiePolicy = () => {
                 For mobile devices, you can usually find cookie settings in your mobile browser's settings menu:
               </p>
               <ul className="list-disc pl-6 text-gray-700 space-y-1">
-                <li><strong>iOS Safari:</strong> Settings > Safari > Block All Cookies</li>
-                <li><strong>Android Chrome:</strong> Settings > Site Settings > Cookies</li>
+                <li><strong>iOS Safari:</strong> Settings {">"}  Safari {">"}  Block All Cookies</li>
+                <li><strong>Android Chrome:</strong> Settings {">"}  Site Settings {">"}  Cookies</li>
               </ul>
             </section>
 
