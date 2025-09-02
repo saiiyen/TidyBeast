@@ -132,7 +132,7 @@ const Contact = () => {
       icon: Phone,
       title: "Call Us",
       details: "+91 99590 47238",
-      subtitle: "Mon-Sun: 9AM - 9PM",
+      subtitle: "Mon-Sun: 9AM - 7PM",
       color: "text-green-500"
     },
     {
@@ -152,7 +152,7 @@ const Contact = () => {
     {
       icon: Clock,
       title: "Business Hours",
-      details: "Mon-Sun: 9AM-9PM",
+      details: "Mon-Sun: 9AM-7PM",
       subtitle: "7 days a week service",
       color: "text-purple-500"
     }
