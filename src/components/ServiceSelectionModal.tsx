@@ -13,7 +13,7 @@ import { toast } from "sonner";
 import PaymentModal from "./PaymentModal";
 import { dataCollectionService, type BookingData } from "@/services/dataCollectionService";
 import { emailService } from "@/services/emailService";
-import { SERVICES_CONFIG, getServicePrice } from "@/config/pricing";
+import { SERVICES_CONFIG, getServicePrice, getSofaPrice, getCarpetPrice, SOFA_SEATER_OPTIONS } from "@/config/pricing";
 
 interface ServiceSelectionModalProps {
   isOpen: boolean;
@@ -40,6 +40,8 @@ interface BookingFormData {
   selectedService: string;
   homeSize: string;
   quantity: number; // For quantity-based services
+  sofaType: string; // For sofa cleaning - seater type
+  carpetArea: number; // For carpet cleaning - area in sq ft
   specialRequirements: string;
 }
 
@@ -59,6 +61,8 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({
     selectedService: '',
     homeSize: preselectedBHK || '',
     quantity: 1, // Default quantity for quantity-based services
+    sofaType: '2-seater', // Default sofa type
+    carpetArea: 50, // Default carpet area in sq ft
     specialRequirements: '',
   });
   
@@ -70,6 +74,16 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({
     if (serviceId === 'kitchen-cleaning' || serviceId === 'washroom-cleaning') {
       const basePrice = serviceId === 'kitchen-cleaning' ? 1500 : 799;
       return basePrice * formData.quantity;
+    }
+    
+    // For sofa cleaning
+    if (serviceId === 'sofa-cleaning') {
+      return getSofaPrice(formData.sofaType as any) * formData.quantity;
+    }
+    
+    // For carpet cleaning
+    if (serviceId === 'carpet-cleaning') {
+      return getCarpetPrice(formData.carpetArea);
     }
     
     // For other services, use BHK-based pricing
@@ -89,7 +103,8 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({
           service.id === 'deep-cleaning' ? Sparkles :
           service.id === 'house-maiden' ? Building2 :
           service.id === 'move-in-out' ? Truck :
-          service.id === 'sofa-carpet' ? Sofa :
+          service.id === 'sofa-cleaning' ? Sofa :
+          service.id === 'carpet-cleaning' ? Sofa :
           service.id === 'sanitization' ? ShieldCheck :
           service.id === 'kitchen-cleaning' ? ChefHat :
           service.id === 'washroom-cleaning' ? Bath : Home,
@@ -247,6 +262,8 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({
         selectedService: '',
         homeSize: preselectedBHK || '',
         quantity: 1,
+        sofaType: '2-seater',
+        carpetArea: 50,
         specialRequirements: '',
       });
     } catch (error) {
@@ -272,6 +289,8 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({
       selectedService: '',
       homeSize: preselectedBHK || '',
       quantity: 1,
+      sofaType: '2-seater',
+      carpetArea: 50,
       specialRequirements: '',
     });
   };
@@ -335,7 +354,7 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({
                           <p className="text-sm text-gray-600 mb-3">{service.description}</p>
                           <div className="flex items-center justify-between">
                             <div className="text-2xl font-bold text-teal-600">
-                              {(service.id === 'kitchen-cleaning' || service.id === 'washroom-cleaning') ? 
+                              {(service.id === 'kitchen-cleaning' || service.id === 'washroom-cleaning' || service.id === 'sofa-cleaning' || service.id === 'carpet-cleaning') ? 
                                 `₹${calculatePrice(service.id).toLocaleString()}` :
                                 (formData.homeSize ? `₹${calculatePrice(service.id).toLocaleString()}` : 'Select home size')
                               }
@@ -345,6 +364,14 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({
                           {(service.id === 'kitchen-cleaning' || service.id === 'washroom-cleaning') ? (
                             <div className="text-xs text-gray-500 mt-1">
                               {formData.quantity} {service.id === 'kitchen-cleaning' ? 'kitchen(s)' : 'washroom(s)'} - ₹{service.id === 'kitchen-cleaning' ? '1500' : '799'} each
+                            </div>
+                          ) : service.id === 'sofa-cleaning' ? (
+                            <div className="text-xs text-gray-500 mt-1">
+                              {formData.quantity} × {formData.sofaType} sofa(s) - ₹{getSofaPrice(formData.sofaType as any)} each
+                            </div>
+                          ) : service.id === 'carpet-cleaning' ? (
+                            <div className="text-xs text-gray-500 mt-1">
+                              {formData.carpetArea} sq ft - ₹20 per sq ft
                             </div>
                           ) : formData.homeSize && (
                             <div className="text-xs text-gray-500 mt-1">
@@ -429,6 +456,141 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({
                     </div>
                     <div className="text-sm text-teal-700">
                       {formData.quantity} × ₹{formData.selectedService === 'kitchen-cleaning' ? '1,500' : '799'} each
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Sofa Selection for Sofa Cleaning */}
+              {formData.selectedService === 'sofa-cleaning' && (
+                <div className="bg-teal-50 rounded-2xl p-6 border border-teal-200">
+                  <div className="text-center mb-4">
+                    <h3 className="text-lg font-bold text-teal-900 mb-2">
+                      Select your sofa type and quantity
+                    </h3>
+                    <p className="text-sm text-teal-700">
+                      Professional sofa shampooing based on seater configuration
+                    </p>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    {/* Sofa Type Selection */}
+                    <div className="space-y-2">
+                      <Label className="text-sm font-semibold text-teal-900">Sofa Type *</Label>
+                      <Select value={formData.sofaType} onValueChange={(value) => handleInputChange('sofaType', value)}>
+                        <SelectTrigger className="w-full">
+                          <Sofa className="mr-2 h-4 w-4" />
+                          <SelectValue placeholder="Select sofa type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {SOFA_SEATER_OPTIONS.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label} - ₹{option.price.toLocaleString()}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    {/* Quantity Selection */}
+                    <div className="space-y-2">
+                      <Label className="text-sm font-semibold text-teal-900">Number of Sofas</Label>
+                      <div className="flex items-center justify-center gap-4">
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          onClick={() => handleInputChange('quantity', Math.max(1, formData.quantity - 1))}
+                          disabled={formData.quantity <= 1}
+                          className="w-10 h-10 rounded-full border-2 border-teal-300 hover:bg-teal-100 disabled:opacity-50"
+                        >
+                          <Minus className="w-4 h-4" />
+                        </Button>
+                        
+                        <div className="bg-white rounded-xl px-4 py-2 border-2 border-teal-300 min-w-[80px]">
+                          <div className="text-center">
+                            <div className="text-2xl font-bold text-teal-600">{formData.quantity}</div>
+                          </div>
+                        </div>
+                        
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          onClick={() => handleInputChange('quantity', Math.min(10, formData.quantity + 1))}
+                          disabled={formData.quantity >= 10}
+                          className="w-10 h-10 rounded-full border-2 border-teal-300 hover:bg-teal-100 disabled:opacity-50"
+                        >
+                          <Plus className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="text-center mt-4">
+                    <div className="text-2xl font-bold text-teal-600 mb-1">
+                      Total: ₹{calculatePrice('sofa-cleaning').toLocaleString()}
+                    </div>
+                    <div className="text-sm text-teal-700">
+                      {formData.quantity} × {formData.sofaType} × ₹{getSofaPrice(formData.sofaType as any)}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Carpet Area Selection for Carpet Cleaning */}
+              {formData.selectedService === 'carpet-cleaning' && (
+                <div className="bg-teal-50 rounded-2xl p-6 border border-teal-200">
+                  <div className="text-center mb-4">
+                    <h3 className="text-lg font-bold text-teal-900 mb-2">
+                      Enter carpet area for cleaning
+                    </h3>
+                    <p className="text-sm text-teal-700">
+                      Professional carpet shampooing at ₹20 per square feet (minimum ₹200)
+                    </p>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label className="text-sm font-semibold text-teal-900">Carpet Area (Square Feet) *</Label>
+                      <div className="flex items-center gap-4">
+                        <Input
+                          type="number"
+                          min="10"
+                          max="1000"
+                          value={formData.carpetArea}
+                          onChange={(e) => handleInputChange('carpetArea', parseInt(e.target.value) || 50)}
+                          className="text-center text-lg font-semibold"
+                          placeholder="Enter area"
+                        />
+                        <span className="text-sm text-gray-600 whitespace-nowrap">sq ft</span>
+                      </div>
+                    </div>
+                    
+                    {/* Quick area buttons */}
+                    <div className="grid grid-cols-4 gap-2">
+                      {[25, 50, 75, 100].map((area) => (
+                        <Button
+                          key={area}
+                          variant={formData.carpetArea === area ? "default" : "outline"}
+                          size="sm"
+                          onClick={() => handleInputChange('carpetArea', area)}
+                          className={`text-xs ${
+                            formData.carpetArea === area 
+                              ? "bg-gradient-to-r from-teal-600 to-cyan-600 text-white" 
+                              : "border-teal-300 hover:bg-teal-100"
+                          }`}
+                        >
+                          {area} sq ft
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div className="text-center mt-4">
+                    <div className="text-2xl font-bold text-teal-600 mb-1">
+                      Total: ₹{calculatePrice('carpet-cleaning').toLocaleString()}
+                    </div>
+                    <div className="text-sm text-teal-700">
+                      {formData.carpetArea} sq ft × ₹20 per sq ft {getCarpetPrice(formData.carpetArea) === 200 ? '(minimum charge)' : ''}
                     </div>
                   </div>
                 </div>
