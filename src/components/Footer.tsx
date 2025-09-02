@@ -18,7 +18,7 @@ const Footer = () => {
   const socialLinks = [
     { icon: Instagram, href: "https://www.instagram.com/tidybeast_cleaning/", name: "Instagram" },
     { icon: Facebook, href: "https://www.facebook.com/share/16LK8scBLU/", name: "Facebook" },
-    { icon: ThreadsIcon, href: "https://www.threads.net/@tidybeast.co.in", name: "Threads" },
+    { icon: ThreadsIcon, href: "https://www.threads.com/@tidybeast_cleaning", name: "Threads" },
   ];
 
   const quickLinks = [
