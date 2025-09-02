@@ -39,7 +39,9 @@ interface BookingFormData {
   time: string;
   selectedService: string;
   homeSize: string;
-  quantity: number; // For quantity-based services
+  kitchenQuantity: number; // For kitchen cleaning
+  washroomQuantity: number; // For washroom cleaning
+  sofaQuantity: number; // For sofa cleaning
   sofaType: string; // For sofa cleaning - seater type
   carpetArea: number; // For carpet cleaning - area in sq ft
   specialRequirements: string;
@@ -60,7 +62,9 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({
     time: '',
     selectedService: '',
     homeSize: preselectedBHK || '',
-    quantity: 1, // Default quantity for quantity-based services
+    kitchenQuantity: 1, // Default quantity for kitchen cleaning
+    washroomQuantity: 1, // Default quantity for washroom cleaning
+    sofaQuantity: 1, // Default quantity for sofa cleaning
     sofaType: '2-seater', // Default sofa type
     carpetArea: 50, // Default carpet area in sq ft
     specialRequirements: '',
@@ -70,15 +74,19 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({
     const service = serviceOptions.find(s => s.id === serviceId);
     if (!service) return 0;
     
-    // For quantity-based services (kitchen/washroom)
-    if (serviceId === 'kitchen-cleaning' || serviceId === 'washroom-cleaning') {
-      const basePrice = serviceId === 'kitchen-cleaning' ? 1500 : 799;
-      return basePrice * formData.quantity;
+    // For kitchen cleaning
+    if (serviceId === 'kitchen-cleaning') {
+      return 1500 * formData.kitchenQuantity;
+    }
+    
+    // For washroom cleaning
+    if (serviceId === 'washroom-cleaning') {
+      return 799 * formData.washroomQuantity;
     }
     
     // For sofa cleaning
     if (serviceId === 'sofa-cleaning') {
-      return getSofaPrice(formData.sofaType as any) * formData.quantity;
+      return getSofaPrice(formData.sofaType as any) * formData.sofaQuantity;
     }
     
     // For carpet cleaning
@@ -261,7 +269,9 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({
         time: '',
         selectedService: '',
         homeSize: preselectedBHK || '',
-        quantity: 1,
+        kitchenQuantity: 1,
+        washroomQuantity: 1,
+        sofaQuantity: 1,
         sofaType: '2-seater',
         carpetArea: 50,
         specialRequirements: '',
@@ -288,7 +298,9 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({
       time: '',
       selectedService: '',
       homeSize: preselectedBHK || '',
-      quantity: 1,
+      kitchenQuantity: 1,
+      washroomQuantity: 1,
+      sofaQuantity: 1,
       sofaType: '2-seater',
       carpetArea: 50,
       specialRequirements: '',
@@ -363,11 +375,11 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({
                           </div>
                           {(service.id === 'kitchen-cleaning' || service.id === 'washroom-cleaning') ? (
                             <div className="text-xs text-gray-500 mt-1">
-                              {formData.quantity} {service.id === 'kitchen-cleaning' ? 'kitchen(s)' : 'washroom(s)'} - ₹{service.id === 'kitchen-cleaning' ? '1500' : '799'} each
+                              {service.id === 'kitchen-cleaning' ? formData.kitchenQuantity : formData.washroomQuantity} {service.id === 'kitchen-cleaning' ? 'kitchen(s)' : 'washroom(s)'} - ₹{service.id === 'kitchen-cleaning' ? '1500' : '799'} each
                             </div>
                           ) : service.id === 'sofa-cleaning' ? (
                             <div className="text-xs text-gray-500 mt-1">
-                              {formData.quantity} × {formData.sofaType} sofa(s) - ₹{getSofaPrice(formData.sofaType as any)} each
+                              {formData.sofaQuantity} × {formData.sofaType} sofa(s) - ₹{getSofaPrice(formData.sofaType as any)} each
                             </div>
                           ) : service.id === 'carpet-cleaning' ? (
                             <div className="text-xs text-gray-500 mt-1">
@@ -401,8 +413,8 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({
                     <Button
                       variant="outline"
                       size="icon"
-                      onClick={() => handleInputChange('quantity', Math.max(1, formData.quantity - 1))}
-                      disabled={formData.quantity <= 1}
+                      onClick={() => handleInputChange(formData.selectedService === 'kitchen-cleaning' ? 'kitchenQuantity' : 'washroomQuantity', Math.max(1, (formData.selectedService === 'kitchen-cleaning' ? formData.kitchenQuantity : formData.washroomQuantity) - 1))}
+                      disabled={(formData.selectedService === 'kitchen-cleaning' ? formData.kitchenQuantity : formData.washroomQuantity) <= 1}
                       className="w-12 h-12 rounded-full border-2 border-teal-300 hover:bg-teal-100 disabled:opacity-50"
                     >
                       <Minus className="w-5 h-5" />
@@ -410,9 +422,9 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({
                     
                     <div className="bg-white rounded-xl px-6 py-4 border-2 border-teal-300 min-w-[100px]">
                       <div className="text-center">
-                        <div className="text-3xl font-bold text-teal-600">{formData.quantity}</div>
+                        <div className="text-3xl font-bold text-teal-600">{formData.selectedService === 'kitchen-cleaning' ? formData.kitchenQuantity : formData.washroomQuantity}</div>
                         <div className="text-sm text-gray-600">
-                          {formData.quantity === 1 
+                          {(formData.selectedService === 'kitchen-cleaning' ? formData.kitchenQuantity : formData.washroomQuantity) === 1 
                             ? (formData.selectedService === 'kitchen-cleaning' ? 'kitchen' : 'washroom')
                             : (formData.selectedService === 'kitchen-cleaning' ? 'kitchens' : 'washrooms')
                           }
@@ -423,8 +435,8 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({
                     <Button
                       variant="outline"
                       size="icon"
-                      onClick={() => handleInputChange('quantity', Math.min(10, formData.quantity + 1))}
-                      disabled={formData.quantity >= 10}
+                      onClick={() => handleInputChange(formData.selectedService === 'kitchen-cleaning' ? 'kitchenQuantity' : 'washroomQuantity', Math.min(10, (formData.selectedService === 'kitchen-cleaning' ? formData.kitchenQuantity : formData.washroomQuantity) + 1))}
+                      disabled={(formData.selectedService === 'kitchen-cleaning' ? formData.kitchenQuantity : formData.washroomQuantity) >= 10}
                       className="w-12 h-12 rounded-full border-2 border-teal-300 hover:bg-teal-100 disabled:opacity-50"
                     >
                       <Plus className="w-5 h-5" />
@@ -436,11 +448,11 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({
                     {[1, 2, 3, 4].map((num) => (
                       <Button
                         key={num}
-                        variant={formData.quantity === num ? "default" : "outline"}
+                        variant={(formData.selectedService === 'kitchen-cleaning' ? formData.kitchenQuantity : formData.washroomQuantity) === num ? "default" : "outline"}
                         size="sm"
-                        onClick={() => handleInputChange('quantity', num)}
+                        onClick={() => handleInputChange(formData.selectedService === 'kitchen-cleaning' ? 'kitchenQuantity' : 'washroomQuantity', num)}
                         className={`w-10 h-10 rounded-full ${
-                          formData.quantity === num 
+                          (formData.selectedService === 'kitchen-cleaning' ? formData.kitchenQuantity : formData.washroomQuantity) === num
                             ? "bg-gradient-to-r from-teal-600 to-cyan-600 text-white" 
                             : "border-teal-300 hover:bg-teal-100"
                         }`}
@@ -455,7 +467,7 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({
                       Total: ₹{calculatePrice(formData.selectedService).toLocaleString()}
                     </div>
                     <div className="text-sm text-teal-700">
-                      {formData.quantity} × ₹{formData.selectedService === 'kitchen-cleaning' ? '1,500' : '799'} each
+                      {formData.selectedService === 'kitchen-cleaning' ? formData.kitchenQuantity : formData.washroomQuantity} × ₹{formData.selectedService === 'kitchen-cleaning' ? '1,500' : '799'} each
                     </div>
                   </div>
                 </div>
@@ -499,8 +511,8 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({
                         <Button
                           variant="outline"
                           size="icon"
-                          onClick={() => handleInputChange('quantity', Math.max(1, formData.quantity - 1))}
-                          disabled={formData.quantity <= 1}
+                          onClick={() => handleInputChange('sofaQuantity', Math.max(1, formData.sofaQuantity - 1))}
+                          disabled={formData.sofaQuantity <= 1}
                           className="w-10 h-10 rounded-full border-2 border-teal-300 hover:bg-teal-100 disabled:opacity-50"
                         >
                           <Minus className="w-4 h-4" />
@@ -508,15 +520,15 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({
                         
                         <div className="bg-white rounded-xl px-4 py-2 border-2 border-teal-300 min-w-[80px]">
                           <div className="text-center">
-                            <div className="text-2xl font-bold text-teal-600">{formData.quantity}</div>
+                            <div className="text-2xl font-bold text-teal-600">{formData.sofaQuantity}</div>
                           </div>
                         </div>
                         
                         <Button
                           variant="outline"
                           size="icon"
-                          onClick={() => handleInputChange('quantity', Math.min(10, formData.quantity + 1))}
-                          disabled={formData.quantity >= 10}
+                          onClick={() => handleInputChange('sofaQuantity', Math.min(10, formData.sofaQuantity + 1))}
+                          disabled={formData.sofaQuantity >= 10}
                           className="w-10 h-10 rounded-full border-2 border-teal-300 hover:bg-teal-100 disabled:opacity-50"
                         >
                           <Plus className="w-4 h-4" />
@@ -530,7 +542,7 @@ const ServiceSelectionModal: React.FC<ServiceSelectionModalProps> = ({
                       Total: ₹{calculatePrice('sofa-cleaning').toLocaleString()}
                     </div>
                     <div className="text-sm text-teal-700">
-                      {formData.quantity} × {formData.sofaType} × ₹{getSofaPrice(formData.sofaType as any)}
+                      {formData.sofaQuantity} × {formData.sofaType} × ₹{getSofaPrice(formData.sofaType as any)}
                     </div>
                   </div>
                 </div>
