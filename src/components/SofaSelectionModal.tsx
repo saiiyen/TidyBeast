@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Sofa, Check } from "lucide-react";
+import { Sofa, Check, Plus, Minus } from "lucide-react";
 import { SOFA_SEATER_OPTIONS, getSofaPrice } from "@/config/pricing";
 
 interface SofaSelectionModalProps {
   isOpen: boolean;
   onClose: () => void;
   serviceName: string;
-  onSofaSelected: (seaterType: string, price: number) => void;
+  onSofaSelected: (details: string, price: number) => void;
 }
 
 const SofaSelectionModal: React.FC<SofaSelectionModalProps> = ({
@@ -19,10 +19,16 @@ const SofaSelectionModal: React.FC<SofaSelectionModalProps> = ({
   onSofaSelected,
 }) => {
   const [selectedSeater, setSelectedSeater] = useState<string>('2-seater');
+  const [quantity, setQuantity] = useState<number>(1);
+
+  const calculateTotalPrice = () => {
+    return getSofaPrice(selectedSeater as any) * quantity;
+  };
 
   const handleConfirm = () => {
-    const price = getSofaPrice(selectedSeater as any);
-    onSofaSelected(selectedSeater, price);
+    const totalPrice = calculateTotalPrice();
+    const details = `${quantity} × ${selectedSeater} sofa${quantity > 1 ? 's' : ''}`;
+    onSofaSelected(details, totalPrice);
   };
 
   return (
@@ -36,7 +42,7 @@ const SofaSelectionModal: React.FC<SofaSelectionModalProps> = ({
             {serviceName}
           </DialogTitle>
           <p className="text-gray-600 text-center mt-2 text-sm md:text-base">
-            Select the size of your sofa for professional shampooing and deep cleaning service.
+            Select the size and quantity of your sofas for professional shampooing and deep cleaning service.
           </p>
         </DialogHeader>
 
@@ -81,20 +87,87 @@ const SofaSelectionModal: React.FC<SofaSelectionModalProps> = ({
             ))}
           </div>
 
-          {/* Selected Price Summary */}
+          {/* Quantity Selector */}
+          <Card className="border border-gray-200">
+            <CardContent className="p-4 md:p-6">
+              <div className="text-center mb-4">
+                <h3 className="text-base md:text-lg font-semibold text-gray-900 mb-2">
+                  How many sofas need cleaning?
+                </h3>
+                <p className="text-xs md:text-sm text-gray-600">
+                  Each {selectedSeater} sofa is cleaned for ₹{getSofaPrice(selectedSeater as any)}
+                </p>
+              </div>
+              
+              <div className="flex items-center justify-center gap-4 mb-4">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  disabled={quantity <= 1}
+                  className="w-10 h-10 rounded-full border-2 border-teal-300 hover:bg-teal-100 disabled:opacity-50"
+                >
+                  <Minus className="w-4 h-4" />
+                </Button>
+                
+                <div className="bg-teal-50 rounded-xl px-6 py-3 border-2 border-teal-200 min-w-[80px]">
+                  <div className="text-center">
+                    <div className="text-2xl md:text-3xl font-bold text-teal-600">{quantity}</div>
+                    <div className="text-xs text-gray-600">
+                      {quantity === 1 ? 'sofa' : 'sofas'}
+                    </div>
+                  </div>
+                </div>
+                
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => setQuantity(Math.min(10, quantity + 1))}
+                  disabled={quantity >= 10}
+                  className="w-10 h-10 rounded-full border-2 border-teal-300 hover:bg-teal-100 disabled:opacity-50"
+                >
+                  <Plus className="w-4 h-4" />
+                </Button>
+              </div>
+              
+              {/* Quick quantity buttons */}
+              <div className="flex justify-center gap-2 mb-4">
+                {[1, 2, 3, 4].map((num) => (
+                  <Button
+                    key={num}
+                    variant={quantity === num ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setQuantity(num)}
+                    className={`w-8 h-8 rounded-full text-xs ${
+                      quantity === num
+                        ? "bg-gradient-to-r from-teal-600 to-cyan-600 text-white" 
+                        : "border-teal-300 hover:bg-teal-100"
+                    }`}
+                  >
+                    {num}
+                  </Button>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Price Summary */}
           <Card className="border-2 border-teal-200 bg-teal-50">
             <CardContent className="p-4 md:p-6">
               <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-0">
                 <div className="text-center sm:text-left">
-                  <p className="text-xs md:text-sm text-gray-600">Selected Sofa Size</p>
+                  <p className="text-xs md:text-sm text-gray-600">Selected Configuration</p>
                   <p className="text-base md:text-lg font-semibold text-gray-900">
-                    {SOFA_SEATER_OPTIONS.find(opt => opt.value === selectedSeater)?.label}
+                    {quantity} × {SOFA_SEATER_OPTIONS.find(opt => opt.value === selectedSeater)?.label}
                   </p>
                 </div>
                 <div className="text-center sm:text-right">
                   <p className="text-xs md:text-sm text-gray-600">Total Price</p>
                   <p className="text-xl md:text-2xl font-bold text-teal-600">
-                    ₹{getSofaPrice(selectedSeater as any).toLocaleString()}
+                    ₹{calculateTotalPrice().toLocaleString()}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    {quantity} × ₹{getSofaPrice(selectedSeater as any)}
                   </p>
                 </div>
               </div>
@@ -139,7 +212,7 @@ const SofaSelectionModal: React.FC<SofaSelectionModalProps> = ({
               onClick={handleConfirm}
               className="flex-1 py-2 md:py-3 bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white font-semibold text-sm md:text-base"
             >
-              Continue - ₹{getSofaPrice(selectedSeater as any)}
+              Continue - ₹{calculateTotalPrice().toLocaleString()}
             </Button>
           </div>
 
